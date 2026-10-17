@@ -39,7 +39,7 @@ def capture(scene, output, recipe, level):
     scene.render.resolution_x, scene.render.resolution_y = 1400, 1400
     try:
         for obj in meshes:
-            obj.hide_render = obj.get('level') != level or obj.get('stage') == 4
+            obj.hide_render = obj.get('level') != level or obj.get('stage', 0) >= 4
         camera.data.ortho_scale = floor['radius'] * 2.3
         camera.location = (0, -0.001, z + 80)
         host.aim(camera, (0, 0, z))
@@ -55,6 +55,14 @@ def capture(scene, output, recipe, level):
         host.aim(camera, (0, 0, z))
         scene.render.filepath = str(output / 'services-plan.png')
         bpy.ops.render.render(write_still=True)
+        if recipe.get('variant') == 'researched':
+            for label, categories in [('electrical-power-plan', {'INT_POWER', 'INT_BOARDS'}),
+                                      ('electrical-lighting-plan', {'INT_LIGHTS', 'INT_CONTROLS', 'INT_BOARDS'})]:
+                for obj in meshes:
+                    category = next((c.name for c in obj.users_collection), '')
+                    obj.hide_render = obj.get('level') != level or category == 'INT_RAISED' or obj.get('stage') in (3, 4) or (obj.get('stage') == 5 and category not in categories)
+                scene.render.filepath = str(output / (label + '.png'))
+                bpy.ops.render.render(write_still=True)
         for obj in meshes:
             obj.hide_render = any(c.name.startswith('GHR_GLAZING') for c in obj.users_collection)
         changed = []
@@ -89,8 +97,9 @@ def capture(scene, output, recipe, level):
 def main():
     started = time.perf_counter()
     parser = argparse.ArgumentParser(description='Generate the separate conceptual interior in Blender.')
-    parser.add_argument('--parameters', type=Path, default=ROOT / 'interior/parameters.json')
-    parser.add_argument('--exterior-parameters', type=Path, default=ROOT / 'parameters.json')
+    parser.add_argument('--variant', choices=['original', 'researched'], default='original')
+    parser.add_argument('--parameters', type=Path)
+    parser.add_argument('--exterior-parameters', type=Path)
     parser.add_argument('--output-dir', type=Path, default=Path('outputs/gherkin-interior'))
     parser.add_argument('--render', action='store_true')
     parser.add_argument('--glb', action='store_true')
@@ -101,12 +110,15 @@ def main():
         parser.error('Run in background mode to protect open work')
     if not 1 <= args.capture_level <= 40:
         parser.error('Capture level must be between 1 and 40')
-    settings, exterior = load_settings(args.parameters), load_parameters(args.exterior_parameters)
+    settings = load_settings(args.parameters or ROOT / ('interior/parameters-researched.json' if args.variant == 'researched' else 'interior/parameters.json'))
+    exterior = load_parameters(args.exterior_parameters or ROOT / ('research/parameters-exterior.json' if settings.get('variant') == 'researched' else 'parameters.json'))
     if args.verify:
         recipe = generate(exterior, settings)
         bpy.ops.wm.open_mainfile(filepath=str(args.verify.resolve()))
         native, readback = host.validate(bpy.context.scene, recipe)
         design = validate(recipe, settings, readback)
+        write_json(args.verify.parent / 'independent-native-validation.json', native)
+        write_json(args.verify.parent / 'independent-design-validation.json', design)
         print(json.dumps({'native_passed': native['passed'], 'design_passed': design['passed'], 'checks': len(design['checks'])}))
         if not native['passed'] or not design['passed']:
             raise RuntimeError('Reopened interior verification failed')
@@ -155,7 +167,7 @@ def main():
             mesh.materials.append(materials[category])
             obj['gherkin_id'] = item['name']
             obj['stage'], obj['level'] = item['stage'], item['level']
-            obj['accuracy'] = 'assumed interior' if category.startswith('INT_') else 'original approximate exterior'
+            obj['accuracy'] = settings['evidence_status'] if category.startswith('INT_') else exterior['description']
             obj['component_ids'] = json.dumps(item.get('component_ids', []))
             mapping.append({'id': item['name'], 'native_name': obj.name, 'collection': category, 'level': item['level'], 'stage': item['stage']})
         host.presentation(scene)
@@ -165,7 +177,7 @@ def main():
         scene.world.node_tree.nodes['Background'].inputs['Strength'].default_value = 0.35
         scene.cycles.samples = 24
         bpy.ops.wm.save_as_mainfile(filepath=str(filename))
-        write_json(output / 'object-mapping.json', {'objects': mapping, 'components': recipe['components'], 'doors': recipe['doors'], 'rooms': recipe['rooms'], 'networks': recipe['networks']})
+        write_json(output / 'object-mapping.json', {'objects': mapping, **{key: recipe[key] for key in ('components', 'doors', 'rooms', 'networks', 'electrical_circuits', 'electrical_networks', 'lift_schedule') if key in recipe}})
         record('saved', objects=len(mapping))
         bpy.ops.wm.open_mainfile(filepath=str(filename))
         scene = bpy.context.scene

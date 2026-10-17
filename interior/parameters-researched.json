@@ -1,0 +1,281 @@
+{
+  "spec_id": "gherkin-public-evidence-interior-v2",
+  "evidence_status": "Public-source building facts plus inferred plan topology and explicitly assumed fit-out, structure sizes and MEP routes. Not an as-built, construction or engineering approval model.",
+  "units": "metres",
+  "office_levels": [
+    3,
+    35
+  ],
+  "plant_levels": [
+    2,
+    36
+  ],
+  "amenity_levels": [
+    37,
+    40
+  ],
+  "stairs": {
+    "centres_x_m": [
+      -1.65,
+      1.65
+    ],
+    "flight_width_m": 1.35,
+    "central_gap_m": 0.2,
+    "landing_length_m": 1.25,
+    "going_m": 0.28,
+    "risers_per_flight": 14,
+    "waist_m": 0.15,
+    "wall_m": 0.18,
+    "handrail_height_m": 0.95,
+    "door_width_m": 1.05,
+    "poses_m_radians": [
+      [
+        4.2,
+        7.7,
+        -0.5235987755982988
+      ],
+      [
+        4.2,
+        -7.7,
+        3.665191429188092
+      ]
+    ]
+  },
+  "lifts": {
+    "centres_x_m": [
+      -3.0,
+      0.0,
+      3.0
+    ],
+    "centres_y_m": [
+      -6.0,
+      6.0
+    ],
+    "shaft_size_m": [
+      2.3,
+      2.4
+    ],
+    "wall_m": 0.18,
+    "outer_last_level": 37,
+    "middle_last_level": 39,
+    "door_width_m": 1.05,
+    "bank_angles_degrees": [
+      0,
+      120,
+      240
+    ],
+    "bank_counts": [
+      6,
+      5,
+      5
+    ],
+    "bank_last_levels": [
+      36,
+      22,
+      16
+    ],
+    "bank_first_served_levels": [
+      21,
+      3,
+      2
+    ],
+    "bank_radii_m": [
+      5.4,
+      8.1,
+      10.8
+    ],
+    "bank_lateral_offset_m": 2.3,
+    "upper_shuttles": [
+      [
+        -3.5,
+        5.8,
+        0
+      ],
+      [
+        -3.5,
+        -5.8,
+        3.141592653589793
+      ]
+    ],
+    "shuttle_first_level": 37,
+    "shuttle_last_level": 40,
+    "evidence": "R02 states 16 office passenger lifts; R03 plans suggest three bank sectors; R04 shows transfers at 21/22. Exact bank allocation/stops and two upper shuttle proxies are assumptions. R06 historic total 18 remains an unresolved scope conflict."
+  },
+  "service_shafts": {
+    "centres_x_m": [
+      -4.0,
+      4.0
+    ],
+    "size_m": [
+      0.6,
+      1.4
+    ],
+    "wall_m": 0.12,
+    "enclosure_height_m": 2.9,
+    "rectangles_m_radians": [
+      [
+        1.5,
+        0,
+        0.8,
+        1.2,
+        0
+      ],
+      [
+        -2,
+        0,
+        1.4,
+        1.4,
+        0
+      ],
+      [
+        0,
+        3,
+        1.8,
+        1.2,
+        0
+      ],
+      [
+        0,
+        -3,
+        1.2,
+        1.2,
+        0
+      ]
+    ]
+  },
+  "rooms": {
+    "partition_height_m": 2.85,
+    "wall_m": 0.12,
+    "door_width_m": 1.0,
+    "door_height_m": 2.1,
+    "service_centres_x_m": [
+      -6.2,
+      6.2
+    ],
+    "service_centres_y_m": [
+      -3.8,
+      0.0,
+      3.8
+    ],
+    "service_size_m": [
+      3.2,
+      3.2
+    ],
+    "meeting_radius_m": 18,
+    "meeting_size_m": [
+      4.6,
+      4.4
+    ]
+  },
+  "fitout": {
+    "desk_m": [
+      1.5,
+      0.75,
+      0.74
+    ],
+    "workstation_clearance_m": [
+      1.65,
+      2.2
+    ],
+    "grid_m": [
+      1.8,
+      2.4
+    ],
+    "core_clear_radius_m": 13.5,
+    "radial_aisle_width_m": 1.8,
+    "room_clearance_m": 0.6,
+    "facade_clearance_m": 0.75
+  },
+  "services": {
+    "routing_grid_m": 0.5,
+    "head_grid_multiple": 7,
+    "pipe_height_m": 3.05,
+    "head_height_m": 2.7,
+    "fire_radius_m": 0.04,
+    "branch_radius_m": 0.022,
+    "water_radius_m": 0.025,
+    "drain_radius_m": 0.06,
+    "pipe_radial_sides": 8,
+    "fire_root_m": [
+      1.5,
+      0
+    ],
+    "wet_root_m": [
+      -2,
+      0
+    ],
+    "fan_coil_count_per_floor": 6,
+    "ceiling_reference_m": 2.75
+  },
+  "mesh_limits": {
+    "vertices_per_object": 32768,
+    "triangles_per_object": 65536,
+    "components_per_object": 48,
+    "native_objects_per_checkpoint": 64
+  },
+  "validation": {
+    "minimum_stair_headroom_m": 2.0,
+    "native_vertex_tolerance_m": 2e-05,
+    "geometry_tolerance_m": 1e-06
+  },
+  "exclusions": [
+    "No survey, coordinated construction drawings, exact core dimensions or current tenant fit-out are available; plan-derived locations are approximate.",
+    "The original demo remains unchanged. This preset combines dated public sources, not one verified historical or current state.",
+    "Lift bank allocation, travel limits and two upper shuttle proxies are inferred; 16-office-lift and 18-passenger-lift public totals have unresolved scope differences.",
+    "Model level indices and exceptional lobby/top floor heights are approximate; published transfer-level labels are stored as evidence, not surveyed stop coordinates.",
+    "No structural loads, member design, connections, foundations or lateral analysis; radial beam and column sections are proxies.",
+    "No fire strategy, egress-capacity, sprinkler coverage/hydraulics, accessibility or code-compliance assessment.",
+    "Wet risers and basin branches are conceptual. Drainage branches, pressure zoning, insulation, valves and rated penetrations are not designed.",
+    "Four-pipe fan coils are equipment proxies with labelled connection stubs; complete HVAC ductwork and hydronic distribution are not designed.",
+    "Electrical routes are geometric networks only: voltage, conductor ratings, loads, protection, fault levels, earthing, selectivity, emergency supply and lux are unverified.",
+    "DALI link/address groups are illustrative; device commissioning and protocol capacity/compliance are not verified.",
+    "Pipe-system clearance, protected-shaft routing and terminal connectivity checks are limited checks, not an exhaustive clash or engineering coordination review.",
+    "Basement, accommodation stairs at published levels 19-25, complete entrance/retail fit-out and exact rooftop restaurant layout remain omitted."
+  ],
+  "variant": "researched",
+  "raised_floor_m": 0.18,
+  "raised_panel_m": 0.03,
+  "clear_ceiling_m": 2.75,
+  "legacy_core_columns_m": [],
+  "source_registry": "research/EVIDENCE.md",
+  "structure": {
+    "core_radius_m": 13.5,
+    "beam_depth_m": 0.42,
+    "beam_width_m": 0.22,
+    "beam_web_m": 0.012,
+    "beam_flange_m": 0.018,
+    "radial_beam_step_degrees": 10,
+    "core_column_size_m": 0.3,
+    "core_column_count": 18,
+    "hoop_radius_m": 0.09,
+    "evidence": "R01 supports steel core, radial beams on 10-degree centres and perimeter hoops. Core bearing radius, member sections/positions, dome lattice sampling and omitted collisions are inferred."
+  },
+  "electrical": {
+    "source_a_m": [
+      0,
+      3
+    ],
+    "source_b_m": [
+      0,
+      -3
+    ],
+    "control_root_m": [
+      -0.5,
+      3
+    ],
+    "power_height_above_slab_m": 0.075,
+    "lighting_route_height_m": 2.96,
+    "control_route_height_m": 2.84,
+    "luminaire_height_m": 2.75,
+    "luminaire_grid_m": 3.0,
+    "route_radius_m": 0.012,
+    "riser_radius_m": 0.045,
+    "control_radius_m": 0.007,
+    "tray_width_m": 0.12,
+    "tray_height_m": 0.035,
+    "outlets_per_circuit": 8,
+    "lights_per_circuit": 12,
+    "addresses_per_control_link": 64,
+    "evidence": "R04 dual power supply; R05 DALI, LON/BMS integration and occupancy/daylight multisensors. All board positions, feed assignment, outlets, circuit grouping, cable/tray dimensions and routes are inferred. No electrical ratings are selected."
+  }
+}

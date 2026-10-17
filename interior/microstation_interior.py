@@ -44,14 +44,14 @@ def verify_saved():
     print('Gherkin interior: reopened native geometry and design checks passed.')
 
 
-def build():
+def build(settings_path=None, exterior_path=None):
     started = time.perf_counter()
     model, file, units, output = context()
     if any(True for _ in model.GetDgnModel().GetGraphicElements()):
         raise RuntimeError('Active model must be empty; existing geometry is never removed')
     output.mkdir(exist_ok=False)
-    settings = load_settings(os.environ.get('GHERKIN_INTERIOR_PARAMETERS') or ROOT / 'interior/parameters.json')
-    exterior = load_parameters(os.environ.get('GHERKIN_PARAMETERS') or ROOT / 'parameters.json')
+    settings = load_settings(settings_path or os.environ.get('GHERKIN_INTERIOR_PARAMETERS') or ROOT / 'interior/parameters.json')
+    exterior = load_parameters(exterior_path or os.environ.get('GHERKIN_PARAMETERS') or ROOT / ('research/parameters-exterior.json' if settings.get('variant') == 'researched' else 'parameters.json'))
     log, mapping = [], {'objects': [], 'components': [], 'rooms': [], 'doors': [], 'networks': []}
     def record(event, **values):
         log.append({'elapsed_seconds': round(time.perf_counter() - started, 6), 'event': event, **values})
@@ -64,8 +64,9 @@ def build():
         record('started', python_version=sys.version.split()[0], uor_per_meter=units)
         recipe = generate(exterior, settings)
         record('geometry_generated', counts=recipe['counts'])
-        for key in ('components', 'rooms', 'doors', 'networks'):
-            mapping[key] = recipe[key]
+        for key in ('components', 'rooms', 'doors', 'networks', 'electrical_circuits', 'electrical_networks', 'lift_schedule'):
+            if key in recipe:
+                mapping[key] = recipe[key]
         write_json(output / 'parameters.json', settings)
         write_json(output / 'exterior-parameters.json', exterior)
         schedules(output, recipe)
@@ -109,7 +110,7 @@ def build():
         for view in range(8):
             if int(MstnView.fit(view, None)) == 0:
                 MstnView.updateSingle(view)
-        checkpoint(4)
+        checkpoint(max(o['stage'] for o in recipe['objects']))
         PyCadInputQueue.SendKeyin('filedesign')
         record('complete', counts=recipe['counts'])
         print('Gherkin interior: created, saved and verified ' + str(len(mapping['objects'])) + ' native meshes.')

@@ -1,5 +1,7 @@
 # Procedural interior experiment
 
+This page describes the original conceptual interior preset (v1). For public-plan research, the revised core and electrical systems, use the separate [researched variant](../research/README.md). Both share the native adapters; `--variant researched` selects the newer parameters in Blender. The original preset remains the default.
+
 This separate version adds a coordinated **conceptual interior** to the original approximate Gherkin. It generates shaft openings, stairs, lifts, rooms, doors, furniture, service equipment and connected pipe routes in both MicroStation and Blender.
 
 **It does not reproduce the actual interior.** The supplied research contains no verified core plans, tenant layouts or service drawings. Every new interior placement and dimension is an explicit assumption. Geometry checks make the experiment more useful for developing a procedural building model; they do not make it engineering-grade, as-built or suitable for construction. See [EVIDENCE.md](EVIDENCE.md).

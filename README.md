@@ -8,13 +8,13 @@ I originally did this experiment with my own custom MicroStation MCP. That MCP r
 
 This is an independent experiment inspired by Bentley's Gherkin demonstration. The model reproduces our mathematical reconstruction, not Bentley's unpublished model or the building's as-built geometry. Read the [experiment notes](docs/EXPERIMENT.md) and [validation results](docs/VALIDATION.md) for the evidence and limits.
 
-A separate [procedural interior version](interior/README.md) adds stairs, lifts, shaft openings, rooms, furniture and conceptual services in both applications. All interior placements are declared assumptions; no verified interior plans were supplied. The original scripts below remain unchanged.
+A separate [procedural interior version](interior/README.md) adds stairs, lifts, shaft openings, rooms, furniture and conceptual services in both applications. The newer [researched variant](research/README.md) adds public-plan core topology, engineering envelope anchors, steel framing, raised floors and electrical distribution. It distinguishes documented facts from inferred interior geometry. The original exterior default geometry is preserved.
 
 ## Choose your application
 
 | Route | Requirements | Result |
 | --- | --- | --- |
-| Blender | Blender 4.5 LTS, tested on Windows | Native `.blend`, optional `.glb`, and three rendered views |
+| Blender | Blender 5.2 LTS; original presets also tested in 4.5 LTS on Windows | Native `.blend`, optional `.glb`, and rendered views |
 | MicroStation | Licensed MicroStation 2026 with its native Python support | Native 3D `.dgn` with solid floors, mesh framing and glazing |
 | Geometry only | Python 3.10 or newer | Portable geometry JSON and regression tests |
 
@@ -54,6 +54,8 @@ The `MSPy*` modules are supplied by MicroStation and are only available inside i
 ## Parameters and evidence
 
 The default [parameters.json](parameters.json) preserves the original experiment's dimensions exactly. [GEOMETRY_RECIPE.md](GEOMETRY_RECIPE.md) explains the equations and topology. [SOURCES.md](SOURCES.md) records the original research and its unresolved questions.
+
+The optional [researched preset](research/parameters-exterior.json) uses additional project-team evidence. Its [source register](research/EVIDENCE.md) records the documented anchors, dated plan observations, conflicting lift totals and unsupported details. Select it explicitly; it does not replace the original demonstration inputs.
 
 | Evidence class | Examples |
 | --- | --- |

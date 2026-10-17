@@ -1,0 +1,396 @@
+{
+  "date": "2026-10-17",
+  "spec_id": "gherkin-public-evidence-interior-v2",
+  "accuracy": "Public evidence plus inferred placements; not an as-built or engineering approval model",
+  "counts": {
+    "perforated_slab": 40,
+    "raised_floor_panel": 40,
+    "door_leaf": 828,
+    "stair_enclosure": 80,
+    "lift_shaft": 414,
+    "service_enclosure": 160,
+    "atrium_guardrail_proxy": 900,
+    "lift_car": 18,
+    "lift_guide": 36,
+    "stair_flight": 160,
+    "stair_handrail": 320,
+    "stair_landing": 80,
+    "intermediate_landing": 2,
+    "core_steel_column_proxy": 666,
+    "radial_steel_beam_proxy": 1188,
+    "perimeter_hoop_proxy": 360,
+    "dome_lattice_proxy": 1008,
+    "room_partition": 305,
+    "electrical_equipment_proxy": 37,
+    "it_equipment_proxy": 37,
+    "cafe_table": 31,
+    "cafe_seat": 124,
+    "heating_plant_proxy": 2,
+    "air_handling_proxy": 2,
+    "water_tank_proxy": 1,
+    "pump_set_proxy": 1,
+    "meeting_table": 90,
+    "meeting_chair": 360,
+    "workstation": 2020,
+    "workstation_chair": 2020,
+    "wc_cubicle": 148,
+    "wc_proxy": 148,
+    "washbasin": 74,
+    "service_pipe": 14516,
+    "sprinkler_head": 4583,
+    "four_pipe_fan_coil_proxy": 198,
+    "unconnected_fan_coil_port": 792,
+    "electrical_route": 32147,
+    "distribution_board_proxy": 80,
+    "lighting_controller_proxy": 40,
+    "luminaire_proxy": 4042,
+    "dali_interface_proxy": 4042,
+    "occupancy_daylight_sensor_proxy": 1024,
+    "underfloor_containment_proxy": 5489,
+    "floor_power_outlet": 2020,
+    "native_objects": 2431,
+    "components": 80673,
+    "levels": 40,
+    "rooms": 305,
+    "doors": 828,
+    "vertices": 1580210,
+    "triangles": 2722468,
+    "electrical_circuits": 622,
+    "electrical_networks": 120,
+    "office_lifts": 16,
+    "upper_shuttle_proxies": 2
+  },
+  "hosts": {
+    "blender_researched_interior": {
+      "version": "5.2.1 LTS",
+      "build_hash": "9e2066aef7ef",
+      "python": "3.13.13",
+      "os": "Windows",
+      "native_checks": 2433,
+      "native_passed": true,
+      "design_checks": 57,
+      "design_passed": true,
+      "independent_fresh_process_native_checks": 2433,
+      "independent_fresh_process_design_checks": 57,
+      "independent_fresh_process_passed": true,
+      "maximum_vertex_error_m": 7.630839170647692e-06,
+      "build_validate_export_render_seconds": 258.454377,
+      "checkpoints_before_final_save": [
+        {
+          "elapsed_seconds": 89.449263,
+          "event": "stage_checkpoint",
+          "stage": 1,
+          "objects": 405
+        },
+        {
+          "elapsed_seconds": 89.577448,
+          "event": "stage_checkpoint",
+          "stage": 2,
+          "objects": 479
+        },
+        {
+          "elapsed_seconds": 90.119099,
+          "event": "stage_checkpoint",
+          "stage": 3,
+          "objects": 762
+        },
+        {
+          "elapsed_seconds": 91.358328,
+          "event": "stage_checkpoint",
+          "stage": 4,
+          "objects": 1310
+        }
+      ]
+    },
+    "microstation_researched_interior": {
+      "version": "26.00.02.39",
+      "status": "build and unloaded/reopened read-back passed",
+      "native_checks": 2432,
+      "native_passed": true,
+      "design_checks": 57,
+      "design_passed": true,
+      "python": "3.12.12",
+      "uor_per_meter": 10000.0,
+      "build_validate_seconds": 341.272607,
+      "maximum_vertex_error_m": 1.443119118362539e-14,
+      "unloaded_and_reopened_native_checks": 2432,
+      "unloaded_and_reopened_design_checks": 57,
+      "unloaded_and_reopened_passed": true,
+      "reopened_maximum_vertex_error_m": 1.443119118362539e-14
+    },
+    "blender_original_exterior": {
+      "version": "5.2.1 LTS",
+      "native_passed": true,
+      "checks": 131,
+      "build_validate_render_seconds": 27.590742
+    },
+    "blender_researched_exterior": {
+      "version": "5.2.1 LTS",
+      "native_passed": true,
+      "checks": 131,
+      "build_validate_render_seconds": 29.428154
+    },
+    "blender_conceptual_interior": {
+      "version": "5.2.1 LTS",
+      "native_passed": true,
+      "design_passed": true,
+      "native_checks": 1015,
+      "design_checks": 48,
+      "build_validate_render_seconds": 101.191431,
+      "counts": {
+        "perforated_slab": 40,
+        "door_leaf": 680,
+        "stair_enclosure": 80,
+        "lift_shaft": 226,
+        "service_enclosure": 80,
+        "atrium_guardrail_proxy": 990,
+        "lift_car": 6,
+        "lift_guide": 12,
+        "conceptual_core_column": 4,
+        "stair_flight": 160,
+        "stair_handrail": 320,
+        "stair_landing": 80,
+        "intermediate_landing": 2,
+        "room_partition": 374,
+        "electrical_equipment_proxy": 74,
+        "washbasin": 74,
+        "wc_proxy": 74,
+        "it_equipment_proxy": 37,
+        "janitor_equipment_proxy": 37,
+        "cafe_table": 24,
+        "cafe_seat": 96,
+        "heating_plant_proxy": 2,
+        "air_handling_proxy": 2,
+        "water_tank_proxy": 1,
+        "pump_set_proxy": 1,
+        "meeting_table": 150,
+        "meeting_chair": 600,
+        "workstation": 1634,
+        "workstation_chair": 1634,
+        "service_pipe": 12160,
+        "sprinkler_head": 4260,
+        "native_objects": 1013,
+        "components": 23914,
+        "levels": 40,
+        "rooms": 374,
+        "doors": 680,
+        "vertices": 680210,
+        "triangles": 1167640
+      }
+    }
+  },
+  "timing_scope": "Inside script entry point; excludes application startup, imports, independent verification and development",
+  "native_geometry_checks": [
+    {
+      "check": "all_native_objects_present",
+      "pass": true
+    },
+    {
+      "check": "closed_oriented_positive_solid_meshes",
+      "pass": true,
+      "failures": []
+    },
+    {
+      "check": "bounded_mesh_objects",
+      "pass": true,
+      "max_vertices": 3946,
+      "max_triangles": 7976
+    },
+    {
+      "check": "stair_treads_and_vertical_headroom",
+      "pass": true,
+      "sampled_treads": 2240,
+      "supported_treads": 2240,
+      "minimum_measured_headroom_m": 3.782965141215442,
+      "failures": [],
+      "scope": "Vertical rays against actual slabs, stair flights, landings, core walls and columns; not a fire or accessibility assessment"
+    },
+    {
+      "check": "different_pipe_systems_clear",
+      "pass": true,
+      "nearby_pairs_tested": 10270,
+      "clashes": [],
+      "total_clashes": 0,
+      "scope": "Swept nominal pipe radii; same-system joints excluded; fittings and insulation not represented"
+    },
+    {
+      "check": "sprinkler_terminals_connected_to_main_riser",
+      "pass": true,
+      "terminals": 4583,
+      "disconnected": []
+    },
+    {
+      "check": "furniture_clearance_envelopes_disjoint",
+      "pass": true,
+      "clashes": [],
+      "scope": "Declared workstation and cafe clearance envelopes"
+    },
+    {
+      "check": "door_approach_envelopes_clear_of_other_enclosures",
+      "pass": true,
+      "clashes": [],
+      "total_clashes": 0,
+      "scope": "Plan clearance outside doors; closed door leaves are treated as operable"
+    },
+    {
+      "check": "electrical_terminals_connected_to_source",
+      "pass": true,
+      "terminals_checked": 10104,
+      "disconnected": [],
+      "scope": "Endpoint graph from actual native conduit ring centroids to actual terminal top centres with 20 micrometre proximity matching; no electrical performance calculation"
+    },
+    {
+      "check": "electrical_circuit_membership_unique_and_complete",
+      "pass": true,
+      "circuits": 622,
+      "errors": []
+    },
+    {
+      "check": "every_luminaire_has_control_interface",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "check": "electrical_routes_clear_of_wet_pipes",
+      "pass": true,
+      "nearby_pairs_tested": 171957,
+      "clashes": [],
+      "total_clashes": 0,
+      "scope": "Nominal conduit/pipe radii only; fittings, trays, insulation and required regulatory separation not assessed"
+    },
+    {
+      "check": "electrical_routes_avoid_lift_and_stair_enclosures",
+      "pass": true,
+      "obstructions": [],
+      "scope": "Actual horizontal conduit centreline samples at <= 0.1 m against protected enclosure rectangles"
+    },
+    {
+      "check": "electrical_horizontal_routes_inside_floorplate",
+      "pass": true,
+      "outside": []
+    },
+    {
+      "check": "R01_native_envelope_anchors",
+      "pass": true,
+      "height_m": 179.8000030517578,
+      "maximum_sampled_diameter_m": 56.14998455721643,
+      "scope": "Envelope mesh extents, not a full surveyed shape comparison"
+    },
+    {
+      "check": "R01_native_highest_finished_floor",
+      "pass": true,
+      "elevation_m": 167.10000610351562
+    },
+    {
+      "check": "R02_native_raised_floor_void",
+      "pass": true,
+      "minimum_m": 0.149993896484375,
+      "maximum_m": 0.1500091552734375
+    }
+  ],
+  "recorded_omissions": {
+    "Inferred column rejected by envelope or protected core zone": 54,
+    "Room rejected by footprint or envelope clearance": 105,
+    "No connected service route within the current concept": 447
+  },
+  "regression_tests": {
+    "full_suite_before_final_precision_regression": {
+      "passed": 23,
+      "python": "3.12.14"
+    },
+    "final_researched_suite": {
+      "passed": 8,
+      "python": "3.12.14"
+    },
+    "current_test_cases": 24
+  },
+  "glb_export": {
+    "passed": true,
+    "format": "GLB 2.0",
+    "mesh_nodes": 2431,
+    "triangles": 2722468,
+    "expected_object_names": true,
+    "external_buffers": false,
+    "scope": "Container, names and topology counts; not an independent geometric import round-trip"
+  },
+  "previews": [
+    {
+      "image": "floor-plan",
+      "pixel_stream_unchanged": true,
+      "sha256": "7ee42bac5476d094c0543010c89f664347740ec8fc0d2292cf075945e627f525"
+    },
+    {
+      "image": "furnished-floor",
+      "pixel_stream_unchanged": true,
+      "sha256": "8aa88f32f27428fe3d2a2797be5cbef6b751d8d01c029dfd7d1aa6139c2235b3"
+    },
+    {
+      "image": "services-plan",
+      "pixel_stream_unchanged": true,
+      "sha256": "b1aa6b9baacf6e66ac78675c52349675067e25b3a82b2649ac15d99e88377fb4"
+    },
+    {
+      "image": "electrical-power-plan",
+      "pixel_stream_unchanged": true,
+      "sha256": "75e2d60a4519015ab81fa157145150f67fdfe18831ee296724a3af8d731c91fd"
+    },
+    {
+      "image": "electrical-lighting-plan",
+      "pixel_stream_unchanged": true,
+      "sha256": "b5b103a31ea576f56a396e0ad9f4142f36348c157606b2393f68e9b1913dfcbe"
+    },
+    {
+      "image": "interior-cutaway",
+      "pixel_stream_unchanged": true,
+      "sha256": "839877790495a6ea1f17a95cf45345b14761b7ecd020faeefc3b575436f60eff"
+    },
+    {
+      "image": "envelope-isometric",
+      "pixel_stream_unchanged": true,
+      "sha256": "0a9d2922be59ca7cdf2d0e698df156ba3bf35e1c0880ba6b9709627b16983d1a"
+    }
+  ],
+  "unverified": [
+    "No survey, coordinated construction drawings, exact core dimensions or current tenant fit-out are available; plan-derived locations are approximate.",
+    "The original demo remains unchanged. This preset combines dated public sources, not one verified historical or current state.",
+    "Lift bank allocation, travel limits and two upper shuttle proxies are inferred; 16-office-lift and 18-passenger-lift public totals have unresolved scope differences.",
+    "Model level indices and exceptional lobby/top floor heights are approximate; published transfer-level labels are stored as evidence, not surveyed stop coordinates.",
+    "No structural loads, member design, connections, foundations or lateral analysis; radial beam and column sections are proxies.",
+    "No fire strategy, egress-capacity, sprinkler coverage/hydraulics, accessibility or code-compliance assessment.",
+    "Wet risers and basin branches are conceptual. Drainage branches, pressure zoning, insulation, valves and rated penetrations are not designed.",
+    "Four-pipe fan coils are equipment proxies with labelled connection stubs; complete HVAC ductwork and hydronic distribution are not designed.",
+    "Electrical routes are geometric networks only: voltage, conductor ratings, loads, protection, fault levels, earthing, selectivity, emergency supply and lux are unverified.",
+    "DALI link/address groups are illustrative; device commissioning and protocol capacity/compliance are not verified.",
+    "Pipe-system clearance, protected-shaft routing and terminal connectivity checks are limited checks, not an exhaustive clash or engineering coordination review.",
+    "Basement, accommodation stairs at published levels 19-25, complete entrance/retail fit-out and exact rooftop restaurant layout remain omitted."
+  ],
+  "source_hash_line_endings": "LF, matching the public Git attributes and source archive",
+  "release_source_sha256": {
+    "blender_gherkin.py": "959512df3acca96e6b4f107c7eeee8256b93483421170c1b403882b17bed5e8f",
+    "gherkin.py": "77f6779faa81a852f3847f74a06ae6a4f30b3c577623f4f97128d6e3284cb4e3",
+    "interior/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "interior/blender_interior.py": "4ea9c5b691b226c0e71986dea0669a9c5df11fa3e69e3bf9ca98e9cf7aaac1fa",
+    "interior/generator.py": "4a872f53b120802ed0ea6f34beb8fc4182be51345d3283e8b90ba7f8fba762ee",
+    "interior/geometry.py": "44868c45ad770f2f87073bb3de48936b42d9ed0770fe04f8dca9955020bd0c13",
+    "interior/microstation_interior.py": "69e058b00a1dc2fe756b1e47ac3054c20d755b4f84e97c7cfe6c8aa8dc5c2788",
+    "interior/microstation_researched.py": "c810684f91597843efb876ade8cc11937412fcb8995d2886547345c05614c49d",
+    "interior/researched.py": "0135ebac39f8bcb823ce372de34fcf0d3738aec4ebf21858cea540593e97c6aa",
+    "interior/validation.py": "82b241933d13820032fe4ae3f7595080e558813898423ef8ba38b4fa971bf689",
+    "interior/validation_researched.py": "3c2fbe29ab508591abc9f56a1697175a13ea0f7992b140ed7271db32e00ef46b",
+    "interior/verify_microstation_interior.py": "efb79af18bdf68fccdd4e4c7343a7ec04f42ecdca2a211925f09726df60c8665",
+    "microstation_gherkin.py": "cae6ba04bce121f3035aa240e5bfc952c995cbd1ca45d60928529405dd3d6f5c",
+    "tests/test_geometry.py": "66da46ff57766a019c5f427fd51547d3efa533bfa55732e763b47e22053a7db4",
+    "tests/test_interior.py": "bd20037f7087751d07682cf0f4b079aedfe6c145f8da9dc7d1c70bed6f1239a5",
+    "tests/test_researched.py": "9e092c16257754d5fb2ce8358d9e62085222c2942c6a4f4d38992fca698dc583",
+    "verify_microstation.py": "5e6f049a78fb5890c21f5ee2a5222b9a13b90bad7311606813395ef9e49ec4ff",
+    "parameters.json": "11c929f500eb9c24f148113d7cb9b61003ad5a85ccdf465968e196cfc9890b11",
+    "interior/parameters.json": "74e2566359405a4d8764838916e0d1a807989f6eb6ba923b1624adbc6408410c",
+    "interior/parameters-researched.json": "fdfc8a01bd062ea77c96d8c2818f454abd6b3d58b69ab0863a003aec86299221",
+    "research/parameters-exterior.json": "094b7ec60437c6c441a188870e044238e0943609ba7f94a723e2e91fb6f053ad"
+  },
+  "native_file_sha256": "9d970b385459e479855100c30f3674dbc1a5a8713229e0081d94c7faaced673d",
+  "notes": [
+    "Two envelope evidence strings were clarified after the build. Independent native verification also passed against the final public parameter files; numerical geometry inputs are unchanged.",
+    "Blender 4.5.5 LTS was tested for the earlier original exterior and conceptual interior presets, not this researched variant."
+  ]
+}

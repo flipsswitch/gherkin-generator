@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 import gherkin
-from interior.geometry import area, box, clear_point, combine, corners, in_rect, inside, local_xy, mesh_health, overlaps, perforated_slab, segment_distance, stair_flight, tube
+from interior.geometry import area, box, clear_point, clear_segment, combine, corners, in_rect, inside, local_xy, mesh_health, overlaps, perforated_slab, segment_distance, stair_flight, transform, tube
 
 
 COLORS = {
@@ -30,6 +30,12 @@ COLORS = {
     'INT_HOT': ((0.88, 0.42, 0.06), 6),
     'INT_DRAIN': ((0.27, 0.20, 0.15), 6),
     'INT_LIGHTS': ((0.98, 0.93, 0.70), 4),
+    'INT_POWER': ((0.92, 0.58, 0.025), 4),
+    'INT_CONTROLS': ((0.46, 0.17, 0.72), 7),
+    'INT_BOARDS': ((0.16, 0.24, 0.35), 1),
+    'INT_RAISED': ((0.64, 0.66, 0.63), 8),
+    'INT_HVAC': ((0.13, 0.58, 0.49), 2),
+    'INT_FRAME': ((0.27, 0.35, 0.40), 7),
 }
 
 
@@ -80,8 +86,11 @@ def validate_settings(p):
         value = p[group][key]
         if len(value) != size or any(not isinstance(v, (int, float)) or not 0 < v <= 20 for v in value):
             raise ValueError('Invalid dimension vector: ' + group + '.' + key)
-    if p['service_shafts']['centres_x_m'] != [-4.0, 4.0] or p['services']['routing_grid_m'] != 0.5:
+    if p.get('variant') != 'researched' and (p['service_shafts']['centres_x_m'] != [-4.0, 4.0] or p['services']['routing_grid_m'] != 0.5):
         raise ValueError('Interior v1 reserves service roots at x = -4 and +4 on a 0.5 m routing grid')
+    if p.get('variant') == 'researched':
+        from interior.researched import validate_researched_settings
+        validate_researched_settings(p)
 
 
 class Builder:
@@ -138,21 +147,27 @@ class Builder:
         run = s['risers_per_flight'] * s['going_m']
         width = 2 * s['flight_width_m'] + s['central_gap_m']
         total = run + 2 * s['landing_length_m']
-        self.stair_rects = [[cx, 0, width + 2 * s['wall_m'], total + 2 * s['wall_m'], 0] for cx in s['centres_x_m']]
-        self.stair_holes = [[cx, s['landing_length_m'] / 2, width, run + s['landing_length_m'], 0] for cx in s['centres_x_m']]
-        self.shaft_rects = [[cx, 0, *self.settings['service_shafts']['size_m'], 0] for cx in self.settings['service_shafts']['centres_x_m']]
+        self.stair_poses = s.get('poses_m_radians', [[cx, 0, 0] for cx in s['centres_x_m']])
+        self.stair_rects = [[x, y, width + 2 * s['wall_m'], total + 2 * s['wall_m'], angle] for x, y, angle in self.stair_poses]
+        self.stair_holes = [[*local_xy(rect, 0, s['landing_length_m'] / 2), width, run + s['landing_length_m'], rect[4]] for rect in self.stair_rects]
+        self.shaft_rects = self.settings['service_shafts'].get('rectangles_m_radians', [[cx, 0, *self.settings['service_shafts']['size_m'], 0] for cx in self.settings['service_shafts']['centres_x_m']])
         for i, obj in enumerate(self.base['objects'][:p['floor_count']]):
             level, z = i + 1, obj['elevation']
             profile = obj['profile'] if obj['profile'] else [[obj['radius'] * math.cos(j * math.tau / 512), obj['radius'] * math.sin(j * math.tau / 512)] for j in range(512)]
             next_z = p['floor_elevations_m'][i + 1] if i + 1 < p['floor_count'] else z + 3.4
-            lifts = [a for a in self.lifts if level <= a['last_level']]
+            lifts = [a for a in self.lifts if a.get('first_level', 1) <= level <= a['last_level']]
             holes = self.stair_holes + [a['rect'] for a in lifts] + self.shaft_rects
-            floor = {'level': level, 'id': f'L{level:02d}', 'slab_z': z, 'ffl': z + p['slab_thickness_m'], 'next_z': next_z,
+            floor = {'level': level, 'id': f'L{level:02d}', 'slab_z': z, 'ffl': z + p['slab_thickness_m'] + self.settings.get('raised_floor_m', 0), 'next_z': next_z,
                      'radius': obj['radius'], 'phase': self.base['floors'][i]['phase_degrees'], 'profile': profile,
                      'openings': holes, 'lifts': [a['id'] for a in lifts], 'obstacles': list(self.stair_rects),
                      'rooms': [], 'furniture': [], 'service_destinations': []}
             self.floors.append(floor)
             self.add(f'INT-L{level:02d}-SLAB', 'INT_SLABS', 1, level, perforated_slab(profile, holes, z, p['slab_thickness_m']), 'perforated_slab', openings=holes)
+            if self.settings.get('raised_floor_m'):
+                panel = self.settings['raised_panel_m']
+                self.add(f'INT-L{level:02d}-RAISED', 'INT_RAISED', 1, level,
+                         perforated_slab(profile, holes, floor['ffl'] - panel, panel), 'raised_floor_panel', openings=holes,
+                         evidence='R02 dimension; continuous panel proxy; pedestal layout omitted')
             if obj['profile']:
                 for edge, (a, b) in enumerate(zip(profile, profile[1:] + profile[:1])):
                     if min(math.hypot(*a), math.hypot(*b)) >= obj['radius'] - 0.1:
@@ -171,29 +186,37 @@ class Builder:
                 rect = list(lift['rect'])
                 rect[2] += 2 * a['wall_m']
                 rect[3] += 2 * a['wall_m']
-                rect[4] = math.pi if rect[1] < 0 else 0
+                if self.settings.get('variant') != 'researched':
+                    rect[4] = math.pi if rect[1] < 0 else 0
                 floor['obstacles'].append(rect)
-                self.enclosure(f'INT-L{level:02d}-{lift["id"]}', rect, floor, height, a['wall_m'], a['door_width_m'], 'INT_CORE', 1, 'lift_shaft')
+                self.enclosure(f'INT-L{level:02d}-{lift["id"]}', rect, floor, height, a['wall_m'], a['door_width_m'], 'INT_CORE', 1, 'lift_shaft',
+                               door=level in lift.get('served_levels', range(1, lift['last_level'] + 1)))
             for j, rect in enumerate(self.shaft_rects):
                 a = self.settings['service_shafts']
-                outer = [rect[0], rect[1], rect[2] + 2 * a['wall_m'], rect[3] + 2 * a['wall_m'], 0]
+                outer = [rect[0], rect[1], rect[2] + 2 * a['wall_m'], rect[3] + 2 * a['wall_m'], rect[4]]
                 self.enclosure(f'INT-L{level:02d}-RISER-{j + 1}', outer, floor, a['enclosure_height_m'], a['wall_m'], 0, 'INT_CORE', 1, 'service_enclosure', door=False)
                 floor['obstacles'].append(outer)
         for obj in self.base['objects'][p['floor_count']:]:
             obj['stage'], obj['level'] = 1, 0
             self.objects.append(obj)
         for j, lift in enumerate(self.lifts):
-            x, y, w, d, _ = lift['rect']
-            z = self.floors[0]['ffl']
+            x, y, w, d, angle = lift['rect']
+            first = lift.get('first_level', 1)
+            z = self.floors[first - 1]['ffl']
             last = self.floors[lift['last_level'] - 1]
             car = combine([box([x, y, w - 0.25, d - 0.25, 0], z + dz, h) for dz, h in [(0.02, 0.12), (2.25, 0.12)]] +
                           [box([x + side * (w / 2 - 0.16), y, 0.08, d - 0.25, 0], z + 0.14, 2.11) for side in (-1, 1)] +
                           [box([x, y + (1 if y > 0 else -1) * (d / 2 - 0.16), w - 0.25, 0.08, 0], z + 0.14, 2.11)])
-            self.add('INT-' + lift['id'] + '-CAR', 'INT_LIFTS', 1, 1, car, 'lift_car', shaft=lift['id'], served_levels=[1, lift['last_level']])
+            if self.settings.get('variant') == 'researched':
+                car = combine([box([0, 0, w - 0.25, d - 0.25, 0], z + dz, h) for dz, h in [(0.02, 0.12), (2.25, 0.12)]] +
+                              [box([side * (w / 2 - 0.16), 0, 0.08, d - 0.25, 0], z + 0.14, 2.11) for side in (-1, 1)] +
+                              [box([0, d / 2 - 0.16, w - 0.25, 0.08, 0], z + 0.14, 2.11)])
+                car = transform(car, [x, y, angle])
+            self.add('INT-' + lift['id'] + '-CAR', 'INT_LIFTS', 1, first, car, 'lift_car', shaft=lift['id'], served_levels=lift.get('served_levels', [1, lift['last_level']]))
             for side in (-1, 1):
                 self.add(f'INT-{lift["id"]}-RAIL-{side:+d}', 'INT_LIFTS', 1, 0,
-                         box([x + side * (w / 2 - 0.04), y, 0.04, 0.04, 0], z, last['next_z'] - z - 0.2), 'lift_guide')
-        for i, (x, y) in enumerate([(-3.28, -3.11), (3.28, -3.11), (-3.28, 3.11), (3.28, 3.11)]):
+                         box([*local_xy(lift['rect'], side * (w / 2 - 0.04), 0), 0.04, 0.04, angle], z, last['next_z'] - z - 0.2), 'lift_guide')
+        for i, (x, y) in enumerate(self.settings.get('legacy_core_columns_m', [(-3.28, -3.11), (3.28, -3.11), (-3.28, 3.11), (3.28, 3.11)])):
             self.add(f'INT-CORE-COLUMN-{i + 1}', 'INT_SUPPORTS', 1, 0,
                      box([x, y, 0.25, 0.25, 0], 0.25, self.floors[-1]['ffl'] - 0.25), 'conceptual_core_column')
         self.stairs()
@@ -226,27 +249,30 @@ class Builder:
 
     def stairs(self):
         p, s = self.exterior, self.settings['stairs']
-        module = p['regular_height_module_m']
-        rise = module / (2 * s['risers_per_flight'])
+        regular = p['regular_height_module_m']
         run = s['risers_per_flight'] * s['going_m']
         w, gap, landing = s['flight_width_m'], s['central_gap_m'], s['landing_length_m']
-        for k in range(round(self.floors[-1]['slab_z'] / module)):
-            z = k * module + p['slab_thickness_m']
-            level = max(f['level'] for f in self.floors if f['ffl'] <= z + 1e-7)
-            for j, cx in enumerate(s['centres_x_m']):
+        bays = []
+        for lower, upper in zip(self.floors, self.floors[1:]):
+            count = max(1, math.ceil((upper['ffl'] - lower['ffl']) / (regular * 1.25)))
+            delta = (upper['ffl'] - lower['ffl']) / count
+            bays.extend((lower['ffl'] + i * delta, delta, lower['level']) for i in range(count))
+        for k, (z, module, level) in enumerate(bays):
+            rise = module / (2 * s['risers_per_flight'])
+            for j, pose in enumerate(self.stair_poses):
                 base = f'INT-STAIR-{j + 1}-BAY-{k:02d}'
                 for flight in range(2):
-                    x0 = cx - gap / 2 - w if flight == 0 else cx + gap / 2
+                    x0 = -gap / 2 - w if flight == 0 else gap / 2
                     y0 = -run / 2 if flight == 0 else run / 2
                     direction = 1 if flight == 0 else -1
                     z0 = z + flight * module / 2
                     identifier = base + f'-FLIGHT-{flight + 1}'
                     self.add(identifier, 'INT_STAIRS', 1, level,
-                             stair_flight(x0, x0 + w, y0, direction, z0, s['risers_per_flight'], rise, s['going_m'], s['waist_m']),
+                             transform(stair_flight(x0, x0 + w, y0, direction, z0, s['risers_per_flight'], rise, s['going_m'], s['waist_m']), pose),
                              'stair_flight', riser_m=rise, going_m=s['going_m'], risers=s['risers_per_flight'])
                     for step in range(s['risers_per_flight']):
                         self.walks.append({'component': identifier, 'level': level,
-                                           'xyz': [x0 + w / 2, y0 + direction * (step + 0.5) * s['going_m'], z0 + (step + 1) * rise]})
+                                           'xyz': [*local_xy([*pose[:2], 0, 0, pose[2]], x0 + w / 2, y0 + direction * (step + 0.5) * s['going_m']), z0 + (step + 1) * rise]})
                     for side in (0.06, w - 0.06):
                         a = [x0 + side, y0, z0 + rise + s['handrail_height_m']]
                         b = [x0 + side, y0 + direction * run, z0 + module / 2 + s['handrail_height_m']]
@@ -254,12 +280,12 @@ class Builder:
                         for t in (0.05, 0.5, 0.95):
                             foot = [x0 + side, y0 + direction * run * t, z0 + math.ceil(t * s['risers_per_flight']) * rise]
                             rail_parts.append(tube(foot, [foot[0], foot[1], a[2] + (b[2] - a[2]) * t], 0.015))
-                        self.add(identifier + f'-RAIL-{side:.2f}', 'INT_RAILS', 1, level, combine(rail_parts), 'stair_handrail')
+                        self.add(identifier + f'-RAIL-{side:.2f}', 'INT_RAILS', 1, level, transform(combine(rail_parts), pose), 'stair_handrail')
                 self.add(base + '-MID', 'INT_STAIRS', 1, level,
-                         box([cx, run / 2 + landing / 2, 2 * w + gap, landing, 0], z + module / 2 - s['waist_m'], s['waist_m']), 'stair_landing')
+                         transform(box([0, run / 2 + landing / 2, 2 * w + gap, landing, 0], z + module / 2 - s['waist_m'], s['waist_m']), pose), 'stair_landing')
                 if not any(abs(f['ffl'] - (z + module)) < 1e-7 for f in self.floors):
                     self.add(base + '-TRANSFER', 'INT_STAIRS', 1, level,
-                             box([cx, -run / 2 - landing / 2, 2 * w + gap, landing, 0], z + module - s['waist_m'], s['waist_m']), 'intermediate_landing')
+                             transform(box([0, -run / 2 - landing / 2, 2 * w + gap, landing, 0], z + module - s['waist_m'], s['waist_m']), pose), 'intermediate_landing')
 
     def room(self, identifier, kind, rect, floor):
         p = self.settings['rooms']
@@ -347,7 +373,7 @@ class Builder:
                 for col in range(-limit, limit + 1):
                     xy = local_xy([0, 0, 0, 0, angle], col * p['grid_m'][0], row * p['grid_m'][1])
                     rect = [*xy, *p['workstation_clearance_m'], angle]
-                    if math.hypot(*xy) < p['core_clear_radius_m'] + math.hypot(*p['workstation_clearance_m']) / 2:
+                    if math.hypot(*xy) < floor.get('core_clear_radius_m', p['core_clear_radius_m']) + math.hypot(*p['workstation_clearance_m']) / 2:
                         continue
                     if not self.fits(rect, floor, 1.25, p['facade_clearance_m']):
                         continue
@@ -382,13 +408,32 @@ class Builder:
         step = self.settings['services']['routing_grid_m']
         origin = tuple(round(v / step) for v in root)
         r = self.radius(floor['ffl'] + height) - self.exterior['floor_radial_inset_m'] - 0.2
-        barriers = self.stair_rects + [[*lift['rect'][:2], lift['rect'][2] + 0.5, lift['rect'][3] + 0.5, 0] for lift in self.lifts if floor['level'] <= lift['last_level']]
-        barriers += [[*rect[:2], rect[2] + 0.24, rect[3] + 0.24, 0] for rect in self.shaft_rects if not in_rect(root, rect)]
+        barriers = self.stair_rects + [[*lift['rect'][:2], lift['rect'][2] + 0.5, lift['rect'][3] + 0.5, lift['rect'][4] if self.settings.get('variant') == 'researched' else 0] for lift in self.lifts if lift.get('first_level', 1) <= floor['level'] <= lift['last_level']]
+        barriers += [[*rect[:2], rect[2] + 0.24, rect[3] + 0.24, rect[4]] for rect in self.shaft_rects if not in_rect(root, rect)]
+        barriers += floor.get('routing_keepouts', [])
+        barrier_buckets = defaultdict(list)
+        for rect in barriers:
+            points = corners(rect, 0.12)
+            for x in range(math.floor(min(p[0] for p in points) / 2), math.floor(max(p[0] for p in points) / 2) + 1):
+                for y in range(math.floor(min(p[1] for p in points) / 2), math.floor(max(p[1] for p in points) / 2) + 1):
+                    barrier_buckets[(x, y)].append(rect)
+        def blocked(xy):
+            return any(in_rect(xy, rect, 0.12) for rect in barrier_buckets[(math.floor(xy[0] / 2), math.floor(xy[1] / 2))])
+        if not hasattr(self, 'route_profile_cache'):
+            self.route_profile_cache = {}
+            self.route_edge_cache = {}
+        profile_cache = self.route_profile_cache.setdefault(floor['level'], {})
+        edge_cache = self.route_edge_cache.setdefault(floor['level'], {})
+        def usable(xy, margin):
+            key = (*xy, margin)
+            if key not in profile_cache:
+                profile_cache[key] = clear_point(xy, floor['profile'], margin)
+            return profile_cache[key]
         valid_cache = {}
         def valid(node):
             if node not in valid_cache:
                 xy = [n * step for n in node]
-                valid_cache[node] = (math.hypot(*xy) < r and inside(xy, floor['profile']) and not any(in_rect(xy, rect, 0.12) for rect in barriers))
+                valid_cache[node] = (math.hypot(*xy) < r and not blocked(xy) and usable(xy, 0.08 if self.settings.get('variant') == 'researched' else 0))
             return valid_cache[node]
         if not valid(origin):
             raise ValueError('Service root outside routable space')
@@ -405,8 +450,14 @@ class Builder:
                 nxt = node[0] + dx, node[1] + dy
                 if nxt not in parent and valid(nxt):
                     mid = [(node[k] + nxt[k]) * step / 2 for k in (0, 1)]
-                    if not clear_point(mid, floor['profile'], 0.06) or any(in_rect(mid, rect, 0.12) for rect in barriers):
+                    if blocked(mid) or not usable(mid, 0.06):
                         continue
+                    if self.settings.get('variant') == 'researched':
+                        edge = tuple(sorted((node, nxt)))
+                        if edge not in edge_cache:
+                            edge_cache[edge] = clear_segment([n * step for n in node], [n * step for n in nxt], floor['profile'], 0.03)
+                        if not edge_cache[edge]:
+                            continue
                     parent[nxt] = node
                     queue.append(nxt)
         ends = []
@@ -513,16 +564,23 @@ class Builder:
 
 
 def generate(exterior=None, settings=None):
-    exterior = exterior or gherkin.load_parameters()
     settings = settings or load_settings()
+    researched = settings.get('variant') == 'researched'
+    exterior = exterior or gherkin.load_parameters(ROOT / 'research/parameters-exterior.json' if researched else None)
     validate_settings(settings)
-    if exterior['floor_count'] != 40 or exterior['regular_height_module_m'] != 4.2:
+    if exterior['floor_count'] != 40 or (not researched and exterior['regular_height_module_m'] != 4.2):
         raise ValueError('Interior v1 requires the original 40-level, 4.2 m module schedule')
-    builder = Builder(exterior, settings)
+    if researched:
+        from interior.researched import ResearchBuilder
+        builder = ResearchBuilder(exterior, settings)
+    else:
+        builder = Builder(exterior, settings)
     builder.shell_and_core()
     builder.plan_rooms()
     builder.fitout()
     builder.services()
+    if researched:
+        builder.electrical()
     return builder.finish()
 
 
@@ -538,16 +596,25 @@ def schedules(output, recipe):
         writer.writeheader()
         writer.writerows({k: c[k] for k in fields} for c in recipe['components'])
     gherkin.write_json(output / 'design-status.json', {'representation': recipe['representation'], 'counts': recipe['counts'], 'omissions': recipe['omissions'], 'exclusions': recipe['exclusions']})
+    if 'electrical_circuits' in recipe:
+        with (output / 'electrical-circuits.csv').open('w', newline='', encoding='utf-8') as stream:
+            writer = csv.DictWriter(stream, fieldnames=['id', 'level', 'system', 'board', 'source', 'terminals', 'ratings', 'evidence'])
+            writer.writeheader()
+            writer.writerows({**c, 'terminals': ';'.join(c['terminals'])} for c in recipe['electrical_circuits'])
+        gherkin.write_json(output / 'lift-schedule.json', recipe['lift_schedule'])
 
 
 def main():
     parser = argparse.ArgumentParser(description='Generate a coordinated conceptual Gherkin interior; no as-built claim.')
-    parser.add_argument('--parameters', type=Path, default=ROOT / 'interior/parameters.json')
-    parser.add_argument('--exterior-parameters', type=Path, default=ROOT / 'parameters.json')
+    parser.add_argument('--variant', choices=['original', 'researched'], default='original')
+    parser.add_argument('--parameters', type=Path)
+    parser.add_argument('--exterior-parameters', type=Path)
     parser.add_argument('--output-dir', type=Path, required=True)
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=False)
-    recipe = generate(gherkin.load_parameters(args.exterior_parameters), load_settings(args.parameters))
+    settings = load_settings(args.parameters or ROOT / ('interior/parameters-researched.json' if args.variant == 'researched' else 'interior/parameters.json'))
+    exterior = gherkin.load_parameters(args.exterior_parameters) if args.exterior_parameters else None
+    recipe = generate(exterior, settings)
     gherkin.write_json(args.output_dir / 'geometry.json', recipe)
     schedules(args.output_dir, recipe)
     print(json.dumps(recipe['counts'], indent=2))

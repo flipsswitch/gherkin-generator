@@ -133,6 +133,14 @@ def validate_parameters(p):
         raise ValueError('Crown rings must increase between the body and apex')
     if p['glazing_crown_apex_z_m'] != p['height_m']:
         raise ValueError('Crown apex must match the height')
+    if 'full_floor_levels' in p and any(not isinstance(v, int) or not 1 <= v <= p['floor_count'] for v in p['full_floor_levels']):
+        raise ValueError('Full-floor indices must refer to existing floors')
+    if 'atrium_inner_radius_min_m' in p and not 0 < p['atrium_inner_radius_min_m'] < max(r for _, r in knots):
+        raise ValueError('Invalid minimum atrium radius')
+    radii = p.get('diagrid_radius_knots_z_m')
+    if radii and (len(radii) < 2 or radii[0][0] != 0 or radii[-1][0] != p['diagrid_body_top_m']
+                  or any(b[0] <= a[0] for a, b in zip(radii, radii[1:])) or any(not 0 < r <= 1 for _, r in radii)):
+        raise ValueError('Diagrid radius knots must span the body and remain bounded')
 
 
 def generate(p):
@@ -147,13 +155,15 @@ def generate(p):
     objects, floors, nodes, members, faces, vertices = [], [], [], [], [], []
     for i, z in enumerate(p['floor_elevations_m']):
         r = radius(z) - p['floor_radial_inset_m']
-        full = round(z / p['regular_height_module_m']) % 6 == 0
+        full = i + 1 in p['full_floor_levels'] if 'full_floor_levels' in p else round(z / p['regular_height_module_m']) % 6 == 0
+        if p.get('atrium_inner_radius_min_m', 0) >= r - 0.5:
+            full = True
         name = f'GHR-FLOOR-{i + 1:02d}'
         profile = []
         if not full:
             half = p['atrium_angular_width_deg'] / 2
             sector = 360 / p['atrium_count']
-            inner = r * p['atrium_inner_radius_fraction_of_floor_radius']
+            inner = max(r * p['atrium_inner_radius_fraction_of_floor_radius'], p.get('atrium_inner_radius_min_m', 0))
 
             def polar(radial, angle):
                 return point([radial * math.cos(math.radians(angle)), radial * math.sin(math.radians(angle))])
@@ -195,9 +205,16 @@ def generate(p):
             u = unit(cross(w, [0, 0, 1] if abs(w[2]) < .99 else [0, 1, 0]))
             v = cross(w, u)
             for end in (member['start'], member['end']):
+                radius_knots = p.get('diagrid_radius_knots_z_m')
+                member_radius = p['diagrid_member_radius_m']
+                if radius_knots:
+                    for (za, ra), (zb, rb) in zip(radius_knots, radius_knots[1:]):
+                        if za <= end[2] <= zb:
+                            member_radius = ra + (rb - ra) * (end[2] - za) / (zb - za)
+                            break
                 for j in range(sides):
                     angle = 2 * math.pi * j / sides
-                    mesh_vertices.append(point(add(end, add(scale(u, p['diagrid_member_radius_m'] * math.cos(angle)), scale(v, p['diagrid_member_radius_m'] * math.sin(angle))))))
+                    mesh_vertices.append(point(add(end, add(scale(u, member_radius * math.cos(angle)), scale(v, member_radius * math.sin(angle))))))
             for j in range(sides):
                 t = (j + 1) % sides
                 triangles.extend([[offset + j, offset + t, offset + sides + j], [offset + t, offset + sides + t, offset + sides + j]])

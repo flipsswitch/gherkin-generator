@@ -1,5 +1,7 @@
 # Validation of the script conversion
 
+These are the original conversion results. Subsequent Blender 5.2 and researched-interior tests are recorded in [research/VALIDATION.md](../research/VALIDATION.md).
+
 Host tests were performed on Windows on 17 October 2026, using the supplied defaults. No custom MCP was used to execute either public adapter.
 
 | Check | Result |

@@ -25,8 +25,9 @@ def triangle_height(x, y, a, b, c):
 
 def stair_checks(recipe, objects, minimum):
     grid = defaultdict(list)
+    walk_bounds = [[min(w['xyz'][k] for w in recipe['stair_walk_points']), max(w['xyz'][k] for w in recipe['stair_walk_points'])] for k in (0, 1)]
     for obj in recipe['objects']:
-        if obj['category'] not in ('INT_SLABS', 'INT_STAIRS', 'INT_CORE', 'INT_SUPPORTS'):
+        if obj['category'] not in ('INT_SLABS', 'INT_RAISED', 'INT_STAIRS', 'INT_CORE', 'INT_SUPPORTS', 'INT_FRAME'):
             continue
         data = objects[obj['name']]
         vertices = data.get('vertices_m', data.get('vertices'))
@@ -36,10 +37,10 @@ def stair_checks(recipe, objects, minimum):
                 continue
             xmin, xmax = min(a[0], b[0], c[0]), max(a[0], b[0], c[0])
             ymin, ymax = min(a[1], b[1], c[1]), max(a[1], b[1], c[1])
-            if xmax < -3.2 or xmin > 3.2 or ymax < -1.8 or ymin > 1.8:
+            if xmax < walk_bounds[0][0] or xmin > walk_bounds[0][1] or ymax < walk_bounds[1][0] or ymin > walk_bounds[1][1]:
                 continue
-            for x in range(math.floor(max(-3.2, xmin)), math.floor(min(3.2, xmax)) + 1):
-                for y in range(math.floor(max(-1.8, ymin)), math.floor(min(1.8, ymax)) + 1):
+            for x in range(math.floor(max(walk_bounds[0][0], xmin)), math.floor(min(walk_bounds[0][1], xmax)) + 1):
+                for y in range(math.floor(max(walk_bounds[1][0], ymin)), math.floor(min(walk_bounds[1][1], ymax)) + 1):
                     grid[(x, y)].append((a, b, c))
     failed, clearances, supported = [], [], 0
     for walk in recipe['stair_walk_points']:
@@ -112,7 +113,7 @@ def pipe_checks(recipe, objects, settings):
             graph[b].add(a)
     disconnected = []
     for network in recipe['networks']:
-        root = key([4, 0, recipe['floors'][0]['ffl']])
+        root = key([*settings['services'].get('fire_root_m', [4, 0]), recipe['floors'][0]['ffl']])
         seen, queue = {root}, deque([root])
         while queue:
             node = queue.popleft()
@@ -145,7 +146,7 @@ def layout_checks(recipe):
         enclosures = [(c['id'], c['footprint']) for c in recipe['components'] if c['level'] == floor['level'] and 'footprint' in c]
         for door in (d for d in recipe['doors'] if d['level'] == floor['level']):
             for identifier, rect in enclosures:
-                if identifier != door['parent'] and overlaps(door['approach_rect'], rect):
+                if identifier != door['parent'] and not door['parent'].startswith(identifier + '-CUBICLE-') and overlaps(door['approach_rect'], rect):
                     door_clashes.append([door['id'], identifier])
     return [
         {'check': 'furniture_clearance_envelopes_disjoint', 'pass': not furniture_clashes, 'clashes': furniture_clashes[:30], 'scope': 'Declared workstation and cafe clearance envelopes'},
@@ -189,6 +190,9 @@ def validate(recipe, settings, readback=None):
     checks.append(stair_checks(recipe, objects, settings['validation']['minimum_stair_headroom_m']))
     checks.extend(pipe_checks(recipe, objects, settings))
     checks.extend(layout_checks(recipe))
+    if recipe.get('variant') == 'researched':
+        from interior.validation_researched import researched_checks
+        checks.extend(researched_checks(recipe, settings, objects))
     return {'passed': all(c['pass'] for c in checks), 'checks': checks,
             'geometry_source': 'reopened native mesh vertices and triangles' if readback is not None else 'generated meshes; native host verification still required',
             'layout_source': 'parameter clearance envelopes, tied to verified component mappings in native reports',

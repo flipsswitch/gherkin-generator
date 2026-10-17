@@ -1,5 +1,7 @@
 # Interior evidence and accuracy contract
 
+This is the historical evidence contract for the original conceptual preset. Later public research and the separate revised preset are documented in [research/EVIDENCE.md](../research/EVIDENCE.md).
+
 Status: 17 October 2026. No new web research or proprietary building plans were used for this version. The original supplied source register remains [SOURCES.md](../SOURCES.md). It is not evidence for specific interior placements.
 
 | Class | What it supports in this version |
