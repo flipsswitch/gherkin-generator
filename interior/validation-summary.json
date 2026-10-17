@@ -1,0 +1,148 @@
+{
+  "date": "2026-10-17",
+  "spec_id": "gherkin-coordinated-interior-concept-v1",
+  "accuracy": "Conceptual interior; every interior placement is assumed; not as-built or engineering-grade",
+  "counts": {
+    "perforated_slab": 40,
+    "door_leaf": 680,
+    "stair_enclosure": 80,
+    "lift_shaft": 226,
+    "service_enclosure": 80,
+    "atrium_guardrail_proxy": 990,
+    "lift_car": 6,
+    "lift_guide": 12,
+    "conceptual_core_column": 4,
+    "stair_flight": 160,
+    "stair_handrail": 320,
+    "stair_landing": 80,
+    "intermediate_landing": 2,
+    "room_partition": 374,
+    "electrical_equipment_proxy": 74,
+    "washbasin": 74,
+    "wc_proxy": 74,
+    "it_equipment_proxy": 37,
+    "janitor_equipment_proxy": 37,
+    "cafe_table": 24,
+    "cafe_seat": 96,
+    "heating_plant_proxy": 2,
+    "air_handling_proxy": 2,
+    "water_tank_proxy": 1,
+    "pump_set_proxy": 1,
+    "meeting_table": 150,
+    "meeting_chair": 600,
+    "workstation": 1634,
+    "workstation_chair": 1634,
+    "service_pipe": 12160,
+    "sprinkler_head": 4260,
+    "native_objects": 1013,
+    "components": 23914,
+    "levels": 40,
+    "rooms": 374,
+    "doors": 680,
+    "vertices": 680330,
+    "triangles": 1167760
+  },
+  "hosts": {
+    "blender": {
+      "version": "4.5.5 LTS",
+      "python": "3.11.11",
+      "native_checks": 1015,
+      "native_passed": true,
+      "design_checks": 48,
+      "design_passed": true,
+      "maximum_vertex_error_m": 7.6158557976789976e-06,
+      "independent_fresh_process_reopen_passed": true,
+      "build_and_render_seconds": 143.443742
+    },
+    "microstation": {
+      "version": "26.00.02.39",
+      "python": "3.12.12",
+      "native_checks": 1014,
+      "native_passed": true,
+      "design_checks": 48,
+      "design_passed": true,
+      "uor_per_meter": 10000.0,
+      "maximum_vertex_error_m": 1.434896150467636e-14,
+      "unloaded_and_reopened_native_checks": 1014,
+      "unloaded_and_reopened_design_checks": 48,
+      "unloaded_and_reopened_passed": true,
+      "build_seconds": 138.263807
+    }
+  },
+  "timing_scope": "Inside script entry point; excludes startup, imports, UI preparation, independent verification and development",
+  "native_geometry_checks": {
+    "bounded_mesh_objects": {
+      "check": "bounded_mesh_objects",
+      "pass": true,
+      "max_vertices": 3584,
+      "max_triangles": 6272
+    },
+    "stair_treads_and_vertical_headroom": {
+      "check": "stair_treads_and_vertical_headroom",
+      "pass": true,
+      "sampled_treads": 1920,
+      "supported_treads": 1920,
+      "minimum_measured_headroom_m": 3.7947857814322816,
+      "failures": [],
+      "scope": "Vertical rays against actual slabs, stair flights, landings, core walls and columns; not a fire or accessibility assessment"
+    },
+    "different_pipe_systems_clear": {
+      "check": "different_pipe_systems_clear",
+      "pass": true,
+      "nearby_pairs_tested": 7966,
+      "clashes": [],
+      "total_clashes": 0,
+      "scope": "Swept nominal pipe radii; same-system joints excluded; fittings and insulation not represented"
+    },
+    "sprinkler_terminals_connected_to_main_riser": {
+      "check": "sprinkler_terminals_connected_to_main_riser",
+      "pass": true,
+      "terminals": 4260,
+      "disconnected": []
+    }
+  },
+  "recorded_omissions": {
+    "Room rejected by footprint or envelope clearance": 48,
+    "No connected service route within the current concept": 121
+  },
+  "regression_tests": {
+    "passed": 16,
+    "failed": 0,
+    "python": "3.12.14"
+  },
+  "glb_export": {
+    "passed": true,
+    "format": "GLB 2.0",
+    "mesh_nodes": 1013,
+    "triangles": 1167760,
+    "all_expected_object_names": true,
+    "external_buffer_uris": false,
+    "scope": "Container, object names and topology counts; not a separate geometric round-trip",
+    "build_verify_export_seconds": 100.479958
+  },
+  "unverified": [
+    "No verified interior plans were supplied; no actual lift count, core outline, tenant layout or plant schedule is asserted.",
+    "No structural sizing, loads, reinforcement, connections or lateral analysis.",
+    "No fire strategy, egress-capacity assessment, accessibility certification or code-compliance assessment.",
+    "Pipes are connected conceptual routes, without hydraulic sizing, pressure zones, valves, insulation, hangers or rated penetrations.",
+    "Drain risers are shown; underground drainage and waste branches are not designed.",
+    "Mechanical plant is schematic; ducts, wiring, controls and ceilings are not fully designed.",
+    "The last level is reached by stairs in this concept; step-free access is unresolved.",
+    "The original approximate exterior and slab elevations are retained."
+  ],
+  "tested_source_sha256": {
+    "gherkin.py": "636a0c9ce6007ca6e8b214f9a17d9afb2b172ad1df212b623003f664c01e950d",
+    "blender_gherkin.py": "959512df3acca96e6b4f107c7eeee8256b93483421170c1b403882b17bed5e8f",
+    "microstation_gherkin.py": "cae6ba04bce121f3035aa240e5bfc952c995cbd1ca45d60928529405dd3d6f5c",
+    "parameters.json": "11c929f500eb9c24f148113d7cb9b61003ad5a85ccdf465968e196cfc9890b11",
+    "interior/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "interior/blender_interior.py": "fb56afa49f7969c7f3d98c279f2f65da06d079492607f66ac7a45d43d75f3a44",
+    "interior/generator.py": "6934746b11f5bdc4d49e785ca571f67259182bf92abbc840c52b9765aa5f1a3e",
+    "interior/geometry.py": "66cb10a77a0c1f4d3adf1104d42bfde35b0ea9655bb835cf5fee1fe6bd9527d8",
+    "interior/microstation_interior.py": "3fe31c9726a5536e01b571634cdd20cce70a79625e57e5fb789e79a1dcae6565",
+    "interior/validation.py": "8ad428c345aff9ef378a5d823c74422a9746fa8f01b5ab18e233331016c29e93",
+    "interior/verify_microstation_interior.py": "efb79af18bdf68fccdd4e4c7343a7ec04f42ecdca2a211925f09726df60c8665",
+    "interior/parameters.json": "74e2566359405a4d8764838916e0d1a807989f6eb6ba923b1624adbc6408410c",
+    "tests/test_interior.py": "bd20037f7087751d07682cf0f4b079aedfe6c145f8da9dc7d1c70bed6f1239a5"
+  }
+}

@@ -6,6 +6,9 @@ __pycache__/
 outputs/
 gherkin-blender/
 *-gherkin-report/
+*-gherkin-interior-report/
+native-readback.json.gz
+reopened-readback.json.gz
 *.dgn
 *.dgnlib
 *.blend

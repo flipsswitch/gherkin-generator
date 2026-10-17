@@ -8,6 +8,8 @@ I originally did this experiment with my own custom MicroStation MCP. That MCP r
 
 This is an independent experiment inspired by Bentley's Gherkin demonstration. The model reproduces our mathematical reconstruction, not Bentley's unpublished model or the building's as-built geometry. Read the [experiment notes](docs/EXPERIMENT.md) and [validation results](docs/VALIDATION.md) for the evidence and limits.
 
+A separate [procedural interior version](interior/README.md) adds stairs, lifts, shaft openings, rooms, furniture and conceptual services in both applications. All interior placements are declared assumptions; no verified interior plans were supplied. The original scripts below remain unchanged.
+
 ## Choose your application
 
 | Route | Requirements | Result |
