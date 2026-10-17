@@ -1,0 +1,157 @@
+{
+  "spec_id": "gherkin-prepared-mcp-visual-replication-v1",
+  "description": "Runnable approximate geometry specification; not as-built and not recovered Bentley demo inputs.",
+  "units": "metres",
+  "axis": "Z-up",
+  "origin_m": [
+    0,
+    0,
+    0
+  ],
+  "height_m": 180.0,
+  "height_evidence": "real-building anchor, S6",
+  "floor_count": 40,
+  "floor_count_evidence": "40-storey convention from S4; this specific slab schedule is our approximation",
+  "regular_height_module_m": 4.2,
+  "module_evidence": "teaching approximation in S7-S8, explicitly not an as-built measurement",
+  "floor_elevations_m": [
+    0.0,
+    8.4,
+    12.6,
+    16.8,
+    21.0,
+    25.2,
+    29.4,
+    33.6,
+    37.8,
+    42.0,
+    46.2,
+    50.4,
+    54.6,
+    58.8,
+    63.0,
+    67.2,
+    71.4,
+    75.6,
+    79.8,
+    84.0,
+    88.2,
+    92.4,
+    96.6,
+    100.8,
+    105.0,
+    109.2,
+    113.4,
+    117.6,
+    121.8,
+    126.0,
+    130.2,
+    134.4,
+    138.6,
+    142.8,
+    147.0,
+    151.2,
+    155.4,
+    159.6,
+    163.8,
+    168.0
+  ],
+  "floor_schedule_note": "40 slabs: ground plus 8.4 to 168 inclusive. Omit 4.2 for a simplified double-height lobby. Datum is slab underside.",
+  "slab_thickness_m": 0.25,
+  "floor_radial_inset_m": 0.75,
+  "profile_evidence": "All radius knots and their elevations below are assistant-selected visual approximations, NOT sourced dimensions or Bentley demo parameters.",
+  "profile_knots_z_radius_m": [
+    [
+      0,
+      24.5
+    ],
+    [
+      33.6,
+      27.0
+    ],
+    [
+      67.2,
+      28.25
+    ],
+    [
+      100.8,
+      26.0
+    ],
+    [
+      134.4,
+      21.0
+    ],
+    [
+      151.2,
+      16.0
+    ],
+    [
+      168,
+      9.5
+    ],
+    [
+      176.4,
+      4.5
+    ],
+    [
+      180,
+      0
+    ]
+  ],
+  "profile_interpolation": "shape-preserving cubic Hermite interpolation of squared radius; take nonnegative square root",
+  "atrium_count": 6,
+  "atrium_count_evidence": "real-building anchor, S4",
+  "rotation_deg_per_regular_height_module": 5.0,
+  "rotation_evidence": "public reconstruction convention, S7 and S9; not verified as a demo input",
+  "atrium_angular_width_deg": 12.0,
+  "atrium_inner_radius_fraction_of_floor_radius": 0.68,
+  "unnotched_floor_rule": "Full slab when the integer regular-height-module index z/4.2 is divisible by 6; visualization convention only, not a fire-compartment design.",
+  "diagrid_nodes_per_ring": 18,
+  "diagrid_ring_step_m": 8.4,
+  "diagrid_ring_rotation_step_deg": 10.0,
+  "diagrid_body_top_m": 168.0,
+  "diagrid_topology_evidence": "Original computational implementation of the repeating-frame reconstruction relationship discussed in S7-S8.",
+  "diagrid_radial_inset_m": 0.35,
+  "diagrid_member_radius_m": 0.15,
+  "diagrid_tube_radial_sides": 8,
+  "glazing_samples_per_ring": 72,
+  "glazing_regular_ring_step_m": 2.1,
+  "glazing_crown_ring_elevations_m": [
+    170.1,
+    172.2,
+    174.3,
+    176.4,
+    178.2,
+    179.2,
+    179.8
+  ],
+  "glazing_crown_apex_z_m": 180.0,
+  "glazing_grid_evidence": "Our computational sampling choice. NOT an interpretation of a Revit 72x72 half-surface grid as whole-building panel counts.",
+  "glazing_clear_opacity": 0.28,
+  "glazing_dark_opacity": 0.7,
+  "visual_defaults_evidence": "Insets, member/slab dimensions, notch size, crown samples and opacities are implementation choices, not measured values.",
+  "levels": [
+    "GHR_FLOORS",
+    "GHR_DIAGRID",
+    "GHR_GLAZING_CLEAR",
+    "GHR_GLAZING_DARK",
+    "GHR_GUIDES"
+  ],
+  "validation_tolerances": {
+    "envelope_height_m": 0.02,
+    "floor_elevation_m": 0.01,
+    "profile_ring_radius_m": 0.02,
+    "atrium_rotation_deg": 0.1
+  },
+  "expected_recipe_counts": {
+    "floor_groups": 40,
+    "diagrid_node_rings": 21,
+    "diagrid_nodes": 378,
+    "diagrid_members": 720,
+    "facade_nonzero_radius_rings": 88,
+    "facade_vertices_with_apex": 6337,
+    "facade_triangle_faces": 12600
+  },
+  "count_note": "Expected counts apply to this mathematical recipe, NOT the real building or Bentley demo. Native element counts depend on batching.",
+  "time_budget_seconds": 900
+}
