@@ -1,0 +1,693 @@
+{
+  "date": "2026-10-17",
+  "spec_id": "gherkin-public-evidence-architectural-v3",
+  "accuracy": "Public-source architectural reconstruction with inferred interiors and services; no engineering or as-built approval",
+  "counts": {
+    "perforated_slab": 40,
+    "raised_floor_panel": 40,
+    "door_leaf": 829,
+    "stair_enclosure": 78,
+    "lift_shaft": 412,
+    "service_enclosure": 156,
+    "atrium_guardrail_proxy": 900,
+    "lift_car": 18,
+    "lift_guide": 36,
+    "stair_flight": 156,
+    "stair_handrail": 312,
+    "stair_landing": 78,
+    "intermediate_landing": 2,
+    "curved_amenity_stair_tread": 26,
+    "amenity_stair_handrail": 52,
+    "amenity_stair_landing": 1,
+    "panoramic_platform_lift_proxy": 1,
+    "amenity_lift_platform": 1,
+    "amenity_lift_header": 1,
+    "core_steel_column_proxy": 648,
+    "radial_steel_beam_proxy": 1152,
+    "perimeter_hoop_proxy": 360,
+    "crown_ring_proxy": 252,
+    "crown_triangular_member": 432,
+    "apex_annular_surround": 1,
+    "mezzanine_guardrail": 97,
+    "mezzanine_stairwell_guard": 42,
+    "hollow_diagrid_member": 684,
+    "entrance_chevron_cladding": 16,
+    "facade_mullion": 17173,
+    "entrance_glazed_screen": 5,
+    "entrance_glazed_transom": 1,
+    "recessed_upper_entrance_glazing": 1,
+    "entrance_screen_frame": 12,
+    "revolving_door_header": 4,
+    "revolving_door_drum": 144,
+    "revolving_door_spindle": 4,
+    "revolving_door_leaf": 12,
+    "entrance_canopy": 1,
+    "lobby_aluminium_panel": 28,
+    "reception_desk_proxy": 1,
+    "reception_worktop": 1,
+    "plaza_proxy": 1,
+    "plaza_stone_seat": 8,
+    "plaza_tree_trunk": 8,
+    "plaza_tree_foliage": 40,
+    "paving_joint_proxy": 29,
+    "room_partition": 310,
+    "partition_glazing_frame": 192,
+    "electrical_equipment_proxy": 37,
+    "it_equipment_proxy": 37,
+    "heating_plant_proxy": 2,
+    "air_handling_proxy": 2,
+    "water_tank_proxy": 1,
+    "pump_set_proxy": 1,
+    "meeting_table": 90,
+    "meeting_chair": 360,
+    "workstation": 2020,
+    "workstation_frame": 2020,
+    "monitor_keyboard_mouse": 2020,
+    "workstation_chair": 2020,
+    "chair_caster_base": 2020,
+    "cafe_table": 14,
+    "cafe_seat": 56,
+    "wc_cubicle": 148,
+    "wc_proxy": 148,
+    "washbasin": 74,
+    "private_dining_table": 5,
+    "private_dining_chair": 40,
+    "office_planter": 24,
+    "office_foliage": 72,
+    "crown_bar_proxy": 1,
+    "crown_bar_counter": 1,
+    "service_pipe": 14435,
+    "sprinkler_head": 4557,
+    "four_pipe_fan_coil_proxy": 198,
+    "unconnected_fan_coil_port": 792,
+    "electrical_route": 32196,
+    "distribution_board_proxy": 80,
+    "lighting_controller_proxy": 40,
+    "luminaire_proxy": 4047,
+    "dali_interface_proxy": 4047,
+    "occupancy_daylight_sensor_proxy": 1024,
+    "underfloor_containment_proxy": 5489,
+    "floor_power_outlet": 2020,
+    "native_objects": 2993,
+    "components": 104936,
+    "levels": 40,
+    "rooms": 310,
+    "doors": 833,
+    "vertices": 2201598,
+    "triangles": 3709564,
+    "electrical_circuits": 621,
+    "electrical_networks": 120,
+    "office_lifts": 16,
+    "upper_shuttle_proxies": 2
+  },
+  "hosts": {
+    "blender": {
+      "version": "5.2.1 LTS",
+      "build_hash": "9e2066aef7ef",
+      "python": "3.13.13",
+      "os": "Windows",
+      "native_checks": 2995,
+      "native_passed": true,
+      "design_checks": 64,
+      "design_passed": true,
+      "fresh_process_native_checks": 2995,
+      "fresh_process_design_checks": 64,
+      "fresh_process_passed": true,
+      "maximum_vertex_error_m": 7.671893886593917e-06,
+      "build_validate_export_render_seconds": 311.854921
+    },
+    "microstation": {
+      "version": "26.00.02.39",
+      "python": "3.12.12",
+      "os": "Windows",
+      "uor_per_meter": 10000.0,
+      "native_checks": 2994,
+      "native_passed": true,
+      "design_checks": 64,
+      "design_passed": true,
+      "unloaded_reopened_native_checks": 2994,
+      "unloaded_reopened_design_checks": 64,
+      "unloaded_reopened_passed": true,
+      "maximum_reopened_vertex_error_m": 1.443119118362539e-14,
+      "build_validate_seconds": 477.230121
+    }
+  },
+  "timing_scope": "Prepared script replay including geometry generation, native creation, checks and saving; Blender also exports and renders. Excludes startup, imports, development and independent verification. Not a repeat of the initial 15-minute experiment.",
+  "validation_checks": [
+    {
+      "check": "all_native_objects_present",
+      "pass": true
+    },
+    {
+      "check": "closed_oriented_positive_solid_meshes",
+      "pass": true,
+      "failures": []
+    },
+    {
+      "check": "bounded_mesh_objects",
+      "pass": true,
+      "max_vertices": 8000,
+      "max_triangles": 9216
+    },
+    {
+      "check": "L01_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 6.060481041458843e-07,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L02_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 4.151889527292951e-06,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L03_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 2.783319814625429e-07,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L04_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 9.430900718143675e-07,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L05_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 1.337483013230667e-07,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L06_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 4.647396679047233e-06,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L07_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 1.7053287137969164e-06,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L08_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 8.493384484609123e-08,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L09_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 6.787158781662583e-07,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L10_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 6.161056376186025e-06,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L11_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 3.5046894595325284e-06,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L12_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 2.5717012590575905e-06,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L13_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 3.521938083395071e-07,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L14_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 4.200268051590683e-06,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L15_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 4.150272161496105e-06,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L16_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 1.6009051364562765e-06,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L17_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 2.863412760234496e-07,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L18_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 2.0886449760837422e-06,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L19_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 7.74464297137456e-07,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L20_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 4.786014642377268e-07,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L21_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 5.3092692837708455e-06,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L22_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 1.4545946669386467e-06,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L23_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 4.146803178173286e-06,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L24_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 1.0190296961809509e-07,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L25_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 3.6193060850564507e-06,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L26_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 1.2747725577355595e-06,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L27_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 2.1493532926797343e-06,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L28_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 5.3972593434536975e-06,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L29_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 2.0809332852422813e-06,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L30_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 2.817441583147229e-06,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L31_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 2.748906808847096e-06,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L32_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 1.1953874263781472e-06,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L33_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 3.1165585312464827e-06,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L34_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 9.806508955989557e-07,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L35_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 1.0927072366939683e-06,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L36_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 1.946580539424758e-06,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L37_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 7.599656868251259e-07,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L38_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 7.202445573284422e-07,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L39_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 1.040845205579899e-06,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "L40_shaft_openings_and_slab_volume",
+      "pass": true,
+      "volume_difference_m3": 7.411765068354725e-08,
+      "blocked_opening_centres": []
+    },
+    {
+      "check": "stair_treads_and_vertical_headroom",
+      "pass": true,
+      "sampled_treads": 2210,
+      "supported_treads": 2210,
+      "minimum_measured_headroom_m": 3.782965141215442,
+      "failures": [],
+      "scope": "Vertical rays against actual slabs, stair flights, landings, core walls and columns; not a fire or accessibility assessment"
+    },
+    {
+      "check": "different_pipe_systems_clear",
+      "pass": true,
+      "nearby_pairs_tested": 10268,
+      "clashes": [],
+      "total_clashes": 0,
+      "scope": "Swept nominal pipe radii; same-system joints excluded; fittings and insulation not represented"
+    },
+    {
+      "check": "sprinkler_terminals_connected_to_main_riser",
+      "pass": true,
+      "terminals": 4557,
+      "disconnected": []
+    },
+    {
+      "check": "furniture_clearance_envelopes_disjoint",
+      "pass": true,
+      "clashes": [],
+      "scope": "Declared workstation and cafe clearance envelopes"
+    },
+    {
+      "check": "door_approach_envelopes_clear_of_other_enclosures",
+      "pass": true,
+      "clashes": [],
+      "total_clashes": 0,
+      "scope": "Plan clearance outside doors; closed door leaves are treated as operable"
+    },
+    {
+      "check": "electrical_terminals_connected_to_source",
+      "pass": true,
+      "terminals_checked": 10114,
+      "disconnected": [],
+      "scope": "Endpoint graph from actual native conduit ring centroids to actual terminal top centres with 20 micrometre proximity matching; no electrical performance calculation"
+    },
+    {
+      "check": "electrical_circuit_membership_unique_and_complete",
+      "pass": true,
+      "circuits": 621,
+      "errors": []
+    },
+    {
+      "check": "every_luminaire_has_control_interface",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "check": "electrical_routes_clear_of_wet_pipes",
+      "pass": true,
+      "nearby_pairs_tested": 172241,
+      "clashes": [],
+      "total_clashes": 0,
+      "scope": "Nominal conduit/pipe radii only; fittings, trays, insulation and required regulatory separation not assessed"
+    },
+    {
+      "check": "electrical_routes_avoid_lift_and_stair_enclosures",
+      "pass": true,
+      "obstructions": [],
+      "scope": "Actual horizontal conduit centreline samples at <= 0.1 m against protected enclosure rectangles"
+    },
+    {
+      "check": "electrical_horizontal_routes_inside_floorplate",
+      "pass": true,
+      "outside": []
+    },
+    {
+      "check": "R01_native_envelope_anchors",
+      "pass": true,
+      "height_m": 179.8000030517578,
+      "maximum_sampled_diameter_m": 56.14998455721643,
+      "scope": "Envelope mesh extents, not a full surveyed shape comparison"
+    },
+    {
+      "check": "R01_native_highest_finished_floor",
+      "pass": true,
+      "elevation_m": 167.10000610351562
+    },
+    {
+      "check": "R02_native_raised_floor_void",
+      "pass": true,
+      "minimum_m": 0.149993896484375,
+      "maximum_m": 0.1500091552734375
+    },
+    {
+      "check": "native_crown_CHS_and_lobby_sections",
+      "pass": true,
+      "crown_members": 432,
+      "hollow_diagrid_members": 684,
+      "lobby_panels": 28,
+      "maximum_section_error_m": 7.479635128093687e-06,
+      "failures": [],
+      "scope": "Gross triangular dimensions, CHS radius/wall at each end, 7 m panel height; no strength or fabrication check"
+    },
+    {
+      "check": "R06_native_apex_lens_diameter_and_height",
+      "pass": true,
+      "diameter_m": 2.4000000953674316,
+      "apex_z_m": 179.8000030517578,
+      "scope": "Published diameter; inferred lens curvature"
+    },
+    {
+      "check": "R11_four_native_revolving_door_proxies",
+      "pass": true,
+      "doors": [
+        {
+          "id": "ARC-ENTRY-REVOLVING-1-CROWN",
+          "centre_m": [
+            -8.399999983608723,
+            -20.399999856948853,
+            3.140000104904175
+          ],
+          "diameter_m": 2.399999954431831
+        },
+        {
+          "id": "ARC-ENTRY-REVOLVING-2-CROWN",
+          "centre_m": [
+            -2.2000000094994903,
+            -20.399999856948853,
+            3.140000104904175
+          ],
+          "diameter_m": 2.4000000486333617
+        },
+        {
+          "id": "ARC-ENTRY-REVOLVING-3-CROWN",
+          "centre_m": [
+            2.2000000094994903,
+            -20.399999856948853,
+            3.140000104904175
+          ],
+          "diameter_m": 2.4000000486333617
+        },
+        {
+          "id": "ARC-ENTRY-REVOLVING-4-CROWN",
+          "centre_m": [
+            8.399999983608723,
+            -20.399999856948853,
+            3.140000104904175
+          ],
+          "diameter_m": 2.399999954431831
+        }
+      ],
+      "scope": "Count sourced; dimensions and coordinates inferred; operation not simulated"
+    },
+    {
+      "check": "entrance_approaches_have_real_facade_openings",
+      "pass": true,
+      "sampled_routes": 20,
+      "obstructions": [],
+      "scope": "Five horizontal torso-height rays across a 1 m approach strip against native facade and chevrons. Not an egress, accessibility or full-body collision certification"
+    },
+    {
+      "check": "R12_open_mezzanine_and_curved_stair",
+      "pass": true,
+      "measured_spans_m": [
+        17.800000190734863,
+        21.200000762939453
+      ],
+      "treads": 26,
+      "inferred_rise_m": 0.15961538461538374,
+      "scope": "Native footprint and tread elevations; D-shaped topology observed, all metric setting-out inferred"
+    },
+    {
+      "check": "R12_five_private_dining_room_proxies",
+      "pass": true,
+      "tables": 5,
+      "scope": "Five rooms sourced; geometry and furniture are inferred proxies"
+    },
+    {
+      "check": "upper_services_avoid_amenity_stair_zone",
+      "pass": true,
+      "routes_checked": 127,
+      "failures": [],
+      "scope": "Horizontal native pipe/conduit samples at <=0.1 m outside the inferred circular stair zone"
+    }
+  ],
+  "unverified": [
+    "No survey, coordinated construction drawings, exact core dimensions or current tenant fit-out are available; plan-derived locations are approximate.",
+    "The original demo remains unchanged. This preset combines dated public sources, not one verified historical or current state.",
+    "Lift bank allocation, travel limits and two upper shuttle proxies are inferred; 16-office-lift and 18-passenger-lift public totals have unresolved scope differences.",
+    "Model level indices and exceptional lobby/top floor heights are approximate; published transfer-level labels are stored as evidence, not surveyed stop coordinates.",
+    "No structural loads, member design, connections, foundations or lateral analysis; radial beam and column sections are proxies.",
+    "No fire strategy, egress-capacity, sprinkler coverage/hydraulics, accessibility or code-compliance assessment.",
+    "Wet risers and basin branches are conceptual. Drainage branches, pressure zoning, insulation, valves and rated penetrations are not designed.",
+    "Four-pipe fan coils are equipment proxies with labelled connection stubs; complete HVAC ductwork and hydronic distribution are not designed.",
+    "Electrical routes are geometric networks only: voltage, conductor ratings, loads, protection, fault levels, earthing, selectivity, emergency supply and lux are unverified.",
+    "DALI link/address groups are illustrative; device commissioning and protocol capacity/compliance are not verified.",
+    "Pipe-system clearance, protected-shaft routing and terminal connectivity checks are limited checks, not an exhaustive clash or engineering coordination review.",
+    "Basement, accommodation stairs at published levels 19-25, separate cafe pavilion, retail tenancy, surveyed entrance coordinates, accessible door strategy and exact restaurant/kitchen layout remain omitted.",
+    "Facade triangles and mullions are a computational subdivision, not a reproduction of the 5,500 installed triangular and diamond panels. Double-skin glazing, blinds, drainage and operable vents are not fabricated assemblies.",
+    "The entrance uses four revolving-door proxies, photo-informed chevrons and a 7 m lobby panel height. Door setting-out, accessibility, operation, fixing and weather seals are unverified.",
+    "Triangular crown members reproduce the published gross section envelope; internal plate thickness and welded joints are unknown. The apex lens is a faceted geometric approximation.",
+    "Added furniture, interior glass, planting and plaza detail are illustrative. Public plans and supplied cutaway imagery do not establish current tenant furnishings.",
+    "Architectural captures temporarily hide MEP and cut native meshes. The complete saved model retains electrical and service geometry.",
+    "Upper amenity topology follows dated operator diagrams: open Iris mezzanine, circular stair and five private dining rooms. All setting-out, capacities, fire separation, main-stair termination and small bar-lift details remain inferred; the public plans are not construction drawings."
+  ],
+  "recorded_omissions": {
+    "Inferred column rejected by envelope or protected core zone": 72,
+    "Room rejected by footprint or envelope clearance": 105,
+    "No connected service route within the current concept": 453
+  },
+  "regression_tests": {
+    "passed": 47,
+    "seconds": 214.861,
+    "python": "3.12.14"
+  },
+  "glb_export": {
+    "passed": true,
+    "format": "GLB 2.0",
+    "mesh_nodes": 2993,
+    "triangles": 3709564,
+    "expected_object_names": true,
+    "external_buffers": false,
+    "scope": "Container, object names and topology counts; not an independent geometric import round-trip"
+  },
+  "previews": [
+    {
+      "image": "architectural-cutaway",
+      "pixel_stream_unchanged": true,
+      "sha256": "4ade36dd8f13dd76cbdd7f40d85e4d77f5a331f94e003e55b4c74d0d011af31d"
+    },
+    {
+      "image": "entrance",
+      "pixel_stream_unchanged": true,
+      "sha256": "4adb7f663123535df5ede668dafc490a93a0fe5dbb2d31351e66b422258ce9ea"
+    },
+    {
+      "image": "crown-interior",
+      "pixel_stream_unchanged": true,
+      "sha256": "98a6c8be9c434d1eea5af36b1ee06c9d121071a31027f681fc828e370f6c2ed1"
+    },
+    {
+      "image": "furnished-floor",
+      "pixel_stream_unchanged": true,
+      "sha256": "6a2ba6bd31a4c833ce11070ed101646c76d0551707b534ff35d041125913e663"
+    }
+  ],
+  "blender_dependencies": {
+    "blender": "5.2.1 LTS",
+    "linked_libraries": 0,
+    "embedded_text_blocks": 0,
+    "path_properties": [
+      {
+        "category": "render_output",
+        "rules": [],
+        "relative": true
+      }
+    ],
+    "scope": "Native Blender dependency and render path inspection; saved model unchanged"
+  },
+  "source_hash_line_endings": "LF, matching Git attributes",
+  "source_sha256": {
+    "blender_gherkin.py": "448376b1e98f6839f81f2eeee2286fde270f8f5b8f9d4e8893730e02af0bd5d5",
+    "gherkin.py": "57ccc0ffe9a0d0aed7da57c63dd373d195758927865403f96586dc5668916c83",
+    "interior/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "interior/amenities.py": "571b64cae30ed788cbad1fd30838609363209753b4942ad02b22d61109248aa4",
+    "interior/architectural.py": "a22d38449ee690d69c6d94f93dd07541c66cb0e3548c40d2d1344b58d6c568d8",
+    "interior/architectural_geometry.py": "89b1525fe5239801a20c27ae0c3176d201dc355f0320aada9211ff049711f020",
+    "interior/blender_interior.py": "af337870445a5d791a1e7c394a2e052c9130c76d765f3e1fd22d3183cdbc4012",
+    "interior/generator.py": "3f425ede0f2adeb33e674c909a91207cc6fd73e72d2ca840d8fe51099579511f",
+    "interior/geometry.py": "97b74afc0b1b4297735eb5a3595b6e23570f956338c054b182a719d8614565e2",
+    "interior/microstation_architectural.py": "ea83534fa398a6de4737a327858d292d2eb32dff6445007d6f1411e8028503ad",
+    "interior/microstation_interior.py": "a6c0d934b37a0238c288144e6db596ff67463a62181a0f71390756fcacae081f",
+    "interior/microstation_researched.py": "d8f4b611fc7bd9640e67593e03cd59692300796c86973b10a51a4c89f123e3b9",
+    "interior/presentation_architectural.py": "c062a0397c40f298350e6a52aacd3fa9af9224e9002ecd351641155ca7070839",
+    "interior/researched.py": "2c60b55e0340c6158f38cc57b5497adc5177a7d229b0b362ed99f39d6e7d28e5",
+    "interior/validation.py": "73eabe3fee768648a07a79d95a313885c97420904d9aaf0e38dfdb2184d41051",
+    "interior/validation_architectural.py": "6f001cb63df661860dcdbcae1fc60589a23196519e2aba46a103450306666b38",
+    "interior/validation_researched.py": "3c2fbe29ab508591abc9f56a1697175a13ea0f7992b140ed7271db32e00ef46b",
+    "interior/verify_microstation_interior.py": "efb79af18bdf68fccdd4e4c7343a7ec04f42ecdca2a211925f09726df60c8665",
+    "microstation_gherkin.py": "3718bea7d878ffdb89086131a0f94b0dadc684a28b1ace068a208964393fcc2d",
+    "privacy.py": "0fae60c26ec49d524668c0e3b064cd569967238fe6e6990b3705ea30982b55d0",
+    "tests/test_architectural.py": "1226f017fdcee0d9788115b1c2b615218759d5f510630ff1d2437869f47abe9f",
+    "tests/test_geometry.py": "66da46ff57766a019c5f427fd51547d3efa533bfa55732e763b47e22053a7db4",
+    "tests/test_interior.py": "bd20037f7087751d07682cf0f4b079aedfe6c145f8da9dc7d1c70bed6f1239a5",
+    "tests/test_privacy.py": "2715c1741b5d3fc4662d20aee23546c3dccf78443e48d6b96ebb9f556efe4624",
+    "tests/test_researched.py": "9e092c16257754d5fb2ce8358d9e62085222c2942c6a4f4d38992fca698dc583",
+    "tools/privacy_scan.py": "95f2dc9a9382013cbc8dd1278a274694cf26e124c29889cbe3f6f9e76c58fbee",
+    "verify_microstation.py": "5e6f049a78fb5890c21f5ee2a5222b9a13b90bad7311606813395ef9e49ec4ff",
+    "parameters.json": "11c929f500eb9c24f148113d7cb9b61003ad5a85ccdf465968e196cfc9890b11",
+    "interior/parameters.json": "74e2566359405a4d8764838916e0d1a807989f6eb6ba923b1624adbc6408410c",
+    "interior/parameters-researched.json": "fdfc8a01bd062ea77c96d8c2818f454abd6b3d58b69ab0863a003aec86299221",
+    "interior/parameters-architectural.json": "fa46d53bceaf488afc714263b328568096d0f28db2a9542540bc8235a5631430",
+    "research/parameters-exterior.json": "094b7ec60437c6c441a188870e044238e0943609ba7f94a723e2e91fb6f053ad",
+    "research/parameters-architectural-exterior.json": "e270c63fbc3646216e82cddaefb1b8f54833e9aa206641c9269e8dad9f7a3386"
+  },
+  "native_sha256": {
+    "blend": "989e2449b87a644a461e10d02c7b8bce8587883c239c6c77a5cd510bd78b3be5",
+    "dgn": "ed76a9bd2f24446db2af229026de5813ed02519cff43a11c561e02f6936cf247"
+  },
+  "notes": [
+    "The original and researched presets remain available. Blender 4.5 was not used to test architectural v3.",
+    "Native files and raw console logs are local outputs and are excluded from the public source archive."
+  ]
+}

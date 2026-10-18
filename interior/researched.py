@@ -98,6 +98,9 @@ class ResearchBuilder(Builder):
             for j, (a, b) in enumerate(zip(nodes, nodes[1:] + nodes[:1])):
                 self.add(f'INT-HOOP-{index:02d}-{j:02d}', 'INT_FRAME', 1, 0, tube(a, b, p['hoop_radius_m']),
                          'perimeter_hoop_proxy', source_ids=['R01'], evidence='Hoop existence documented; section and setting-out inferred')
+        self.dome()
+
+    def dome(self):
         top = self.exterior['diagrid_body_top_m']
         previous = None
         for k, z in enumerate([top] + self.exterior['glazing_crown_ring_elevations_m'] + [self.exterior['height_m'] - 0.05]):
@@ -229,17 +232,22 @@ class ResearchBuilder(Builder):
                  start_m=a,end_m=b,radius_m=radius,endpoint_ring_size=8,source_ids=['R04','R05'])
 
     def route_tree(self, floor, root, targets, height):
+        original_keepouts = floor.get('routing_keepouts')
         if getattr(self, 'electrical_routing', False):
             z = floor['ffl'] + height
-            keepouts = []
+            keepouts = list(original_keepouts or [])
             for c in self.pipe_route_obstacles:
                 a, b = c['start_m'], c['end_m']
                 if min(a[2],b[2]) - 0.06 <= z <= max(a[2],b[2]) + 0.06 and abs(a[0] - b[0]) < 1e-8 and abs(a[1] - b[1]) < 1e-8:
                     keepouts.append([a[0],a[1],0.3,0.3,0])
             floor['routing_keepouts'] = keepouts
-        result = super().route_tree(floor,root,targets,height)
-        floor.pop('routing_keepouts',None)
-        return result
+        try:
+            return super().route_tree(floor,root,targets,height)
+        finally:
+            if original_keepouts is None:
+                floor.pop('routing_keepouts',None)
+            else:
+                floor['routing_keepouts'] = original_keepouts
 
     def electrical(self):
         p = self.settings['electrical']

@@ -92,6 +92,9 @@ def validate_settings(p):
     if p.get('variant') == 'researched':
         from interior.researched import validate_researched_settings
         validate_researched_settings(p)
+    if 'architecture' in p:
+        from interior.architectural import validate_architectural_settings
+        validate_architectural_settings(p)
 
 
 class Builder:
@@ -157,19 +160,22 @@ class Builder:
             profile = obj['profile'] if obj['profile'] else [[obj['radius'] * math.cos(j * math.tau / 512), obj['radius'] * math.sin(j * math.tau / 512)] for j in range(512)]
             next_z = p['floor_elevations_m'][i + 1] if i + 1 < p['floor_count'] else z + 3.4
             lifts = [a for a in self.lifts if a.get('first_level', 1) <= level <= a['last_level']]
-            holes = self.stair_holes + [a['rect'] for a in lifts] + self.shaft_rects
+            holes = self.floor_openings(level, self.stair_holes + [a['rect'] for a in lifts] + self.shaft_rects)
+            opening_polygons = self.floor_opening_polygons(level)
             floor = {'level': level, 'id': f'L{level:02d}', 'slab_z': z, 'ffl': z + p['slab_thickness_m'] + self.settings.get('raised_floor_m', 0), 'next_z': next_z,
                      'radius': obj['radius'], 'phase': self.base['floors'][i]['phase_degrees'], 'profile': profile,
                      'openings': holes, 'lifts': [a['id'] for a in lifts], 'obstacles': list(self.stair_rects),
                      'rooms': [], 'furniture': [], 'service_destinations': []}
             self.floors.append(floor)
-            self.add(f'INT-L{level:02d}-SLAB', 'INT_SLABS', 1, level, perforated_slab(profile, holes, z, p['slab_thickness_m']), 'perforated_slab', openings=holes)
+            if opening_polygons:
+                floor['opening_polygons'] = opening_polygons
+            self.add(f'INT-L{level:02d}-SLAB', 'INT_SLABS', 1, level, perforated_slab(profile, holes, z, p['slab_thickness_m'], opening_polygons), 'perforated_slab', openings=holes)
             if self.settings.get('raised_floor_m'):
                 panel = self.settings['raised_panel_m']
                 self.add(f'INT-L{level:02d}-RAISED', 'INT_RAISED', 1, level,
-                         perforated_slab(profile, holes, floor['ffl'] - panel, panel), 'raised_floor_panel', openings=holes,
+                         perforated_slab(profile, holes, floor['ffl'] - panel, panel, opening_polygons), 'raised_floor_panel', openings=holes,
                          evidence='R02 dimension; continuous panel proxy; pedestal layout omitted')
-            if obj['profile']:
+            if obj['profile'] and not obj.get('skip_atrium_guards', False):
                 for edge, (a, b) in enumerate(zip(profile, profile[1:] + profile[:1])):
                     if min(math.hypot(*a), math.hypot(*b)) >= obj['radius'] - 0.1:
                         continue
@@ -221,6 +227,12 @@ class Builder:
             self.add(f'INT-CORE-COLUMN-{i + 1}', 'INT_SUPPORTS', 1, 0,
                      box([x, y, 0.25, 0.25, 0], 0.25, self.floors[-1]['ffl'] - 0.25), 'conceptual_core_column')
         self.stairs()
+
+    def floor_openings(self, level, openings):
+        return openings
+
+    def floor_opening_polygons(self, level):
+        return []
 
     def enclosure(self, identifier, rect, floor, height, wall, door_width, category, stage, role, door=True):
         cx, cy, w, d, angle = rect
@@ -567,11 +579,14 @@ class Builder:
 def generate(exterior=None, settings=None):
     settings = settings or load_settings()
     researched = settings.get('variant') == 'researched'
-    exterior = exterior or gherkin.load_parameters(ROOT / 'research/parameters-exterior.json' if researched else None)
+    exterior = exterior or gherkin.load_parameters(default_exterior(settings))
     validate_settings(settings)
     if exterior['floor_count'] != 40 or (not researched and exterior['regular_height_module_m'] != 4.2):
         raise ValueError('Interior v1 requires the original 40-level, 4.2 m module schedule')
-    if researched:
+    if 'architecture' in settings:
+        from interior.architectural import ArchitecturalBuilder
+        builder = ArchitecturalBuilder(exterior, settings)
+    elif researched:
         from interior.researched import ResearchBuilder
         builder = ResearchBuilder(exterior, settings)
     else:
@@ -583,6 +598,16 @@ def generate(exterior=None, settings=None):
     if researched:
         builder.electrical()
     return builder.finish()
+
+
+def default_settings(variant):
+    return ROOT / ('interior/parameters.json' if variant == 'original' else f'interior/parameters-{variant}.json')
+
+
+def default_exterior(settings):
+    if 'architecture' in settings:
+        return ROOT / 'research/parameters-architectural-exterior.json'
+    return ROOT / ('research/parameters-exterior.json' if settings.get('variant') == 'researched' else 'parameters.json')
 
 
 def schedules(output, recipe):
@@ -609,13 +634,13 @@ def schedules(output, recipe):
 
 def main():
     parser = argparse.ArgumentParser(description='Generate a coordinated conceptual Gherkin interior; no as-built claim.')
-    parser.add_argument('--variant', choices=['original', 'researched'], default='original')
+    parser.add_argument('--variant', choices=['original', 'researched', 'architectural'], default='original')
     parser.add_argument('--parameters', type=Path)
     parser.add_argument('--exterior-parameters', type=Path)
     parser.add_argument('--output-dir', type=Path, required=True)
     args = parser.parse_args()
     create_output_directory(args.output_dir)
-    settings = load_settings(args.parameters or ROOT / ('interior/parameters-researched.json' if args.variant == 'researched' else 'interior/parameters.json'))
+    settings = load_settings(args.parameters or default_settings(args.variant))
     exterior = gherkin.load_parameters(args.exterior_parameters) if args.exterior_parameters else None
     recipe = generate(exterior, settings)
     gherkin.write_json(args.output_dir / 'geometry.json', recipe)

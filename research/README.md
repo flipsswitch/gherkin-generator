@@ -1,5 +1,7 @@
 # Researched envelope and interior
 
+For the entrance, revised crown, detailed furniture and architectural cutaway, see the separate [architectural v3 preset](ARCHITECTURAL.md). This page retains the researched v2 workflow and evidence record.
+
 This separate preset incorporates public plans and project-team engineering evidence. Read [EVIDENCE.md](EVIDENCE.md) for source links, conflicts and the boundary between documented facts and inferred geometry. The original demo and conceptual interior presets remain available.
 
 ![Procedural furnished floor from the saved Blender 5.2 model](images/furnished-floor.png)

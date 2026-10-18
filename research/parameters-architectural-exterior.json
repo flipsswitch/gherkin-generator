@@ -1,0 +1,250 @@
+{
+  "spec_id": "gherkin-public-evidence-envelope-v3",
+  "description": "Architectural v3: same documented envelope anchors, inferred tapered crown, 2.4 m lens, recessed entrance and operator-plan-informed upper amenities.",
+  "units": "metres",
+  "axis": "Z-up",
+  "origin_m": [
+    0,
+    0,
+    0
+  ],
+  "height_m": 179.8,
+  "height_evidence": "R01 p43: dome top 179.8 m",
+  "floor_count": 40,
+  "floor_count_evidence": "R01 p43: 40 floors above ground; model indexing and omitted mezzanine inferred",
+  "regular_height_module_m": 4.15,
+  "module_evidence": "R01 p43: typical office floor-to-floor 4.15 m; exceptional floors remain inferred",
+  "floor_elevations_m": [
+    0.0,
+    8.3,
+    12.45,
+    16.6,
+    20.75,
+    24.9,
+    29.05,
+    33.2,
+    37.35,
+    41.5,
+    45.65,
+    49.8,
+    53.95,
+    58.1,
+    62.25,
+    66.4,
+    70.55,
+    74.7,
+    78.85,
+    83.0,
+    87.15,
+    91.3,
+    95.45,
+    99.6,
+    103.75,
+    107.9,
+    112.05,
+    116.2,
+    120.35,
+    124.5,
+    128.65,
+    132.8,
+    136.95,
+    141.1,
+    145.25,
+    149.4,
+    153.55,
+    157.7,
+    162.61,
+    166.76
+  ],
+  "floor_schedule_note": "Slab undersides. Ground/double-height lobby and upper exceptional intervals inferred. Interior adds 0.16 m slab + 0.18 m raised construction; highest finished floor = 167.1 m (R01). Model index L01 is ground; index-to-published-level correspondence is approximate.",
+  "slab_thickness_m": 0.16,
+  "floor_radial_inset_m": 0.4,
+  "profile_evidence": "R01 max diameter 56.15 m, dome diameter 30 m and rise 22 m. Crown squared radius is 225(1-t)(1+0.25t), t=(z-157.8)/22; its taper, all other connecting knots and datum associations are reconstruction assumptions.",
+  "profile_knots_z_radius_m": [
+    [
+      0,
+      24.5
+    ],
+    [
+      33.2,
+      27.0
+    ],
+    [
+      70.55,
+      28.075
+    ],
+    [
+      99.6,
+      26
+    ],
+    [
+      132.8,
+      21
+    ],
+    [
+      149.4,
+      17
+    ],
+    [
+      157.8,
+      15.0
+    ],
+    [
+      160,
+      14.4070295342
+    ],
+    [
+      162,
+      13.8106476171
+    ],
+    [
+      162.95,
+      13.5061001197
+    ],
+    [
+      164,
+      13.1520235379
+    ],
+    [
+      166,
+      12.4212602666
+    ],
+    [
+      167.1,
+      11.9838637635
+    ],
+    [
+      168,
+      11.6047377401
+    ],
+    [
+      170,
+      10.6828094318
+    ],
+    [
+      172,
+      9.625234783
+    ],
+    [
+      174,
+      8.3808185659
+    ],
+    [
+      176,
+      6.8484555175
+    ],
+    [
+      176.2,
+      6.6720708124
+    ],
+    [
+      177.5,
+      5.3655018905
+    ],
+    [
+      178.4,
+      4.2035625387
+    ],
+    [
+      178.5,
+      4.0525187301
+    ],
+    [
+      179.3,
+      2.5224969182
+    ],
+    [
+      179.6,
+      1.5975510701
+    ],
+    [
+      179.8,
+      0.0
+    ]
+  ],
+  "profile_interpolation": "shape-preserving cubic Hermite interpolation of squared radius; take nonnegative square root",
+  "atrium_count": 6,
+  "atrium_count_evidence": "real-building anchor, S4",
+  "rotation_deg_per_regular_height_module": 5.0,
+  "rotation_evidence": "R01 p38 supports the 5-degree floor progression. Our interpolation between model levels and the ground orientation remain assumptions.",
+  "atrium_angular_width_deg": 12.0,
+  "atrium_inner_radius_fraction_of_floor_radius": 0.68,
+  "unnotched_floor_rule": "Use full_floor_levels in this preset. Its closure schedule and minimum atrium inner radius are inferred visualization choices, not a recovered fire-compartment design.",
+  "diagrid_nodes_per_ring": 18,
+  "diagrid_ring_step_m": 8.305263157894737,
+  "diagrid_ring_rotation_step_deg": 10.0,
+  "diagrid_body_top_m": 157.8,
+  "diagrid_topology_evidence": "Original computational implementation of the repeating-frame reconstruction relationship discussed in S7-S8.",
+  "diagrid_radial_inset_m": 0.35,
+  "diagrid_member_radius_m": 0.15,
+  "diagrid_tube_radial_sides": 8,
+  "glazing_samples_per_ring": 72,
+  "glazing_regular_ring_step_m": 2.0763157894736843,
+  "glazing_crown_ring_elevations_m": [
+    160,
+    162,
+    164,
+    166,
+    168,
+    170,
+    172,
+    174,
+    176,
+    177.5,
+    178.5,
+    179.3,
+    179.6
+  ],
+  "glazing_crown_apex_z_m": 179.8,
+  "glazing_grid_evidence": "Our computational sampling choice. NOT an interpretation of a Revit 72x72 half-surface grid as whole-building panel counts.",
+  "glazing_clear_opacity": 0.72,
+  "glazing_dark_opacity": 0.96,
+  "visual_defaults_evidence": "Notch dimensions, floor inset, full-floor closure schedule, glazing samples and transparency remain explicit assumptions; six fingers and 5 degree progression supported by R01.",
+  "levels": [
+    "GHR_FLOORS",
+    "GHR_DIAGRID",
+    "GHR_GLAZING_CLEAR",
+    "GHR_GLAZING_DARK",
+    "GHR_GUIDES"
+  ],
+  "validation_tolerances": {
+    "envelope_height_m": 0.02,
+    "floor_elevation_m": 0.01,
+    "profile_ring_radius_m": 0.02,
+    "atrium_rotation_deg": 0.1
+  },
+  "count_note": "Counts belong to this procedural preset, not surveyed physical components.",
+  "time_budget_seconds": 900,
+  "diagrid_radius_knots_z_m": [
+    [
+      0,
+      0.254
+    ],
+    [
+      8.3,
+      0.254
+    ],
+    [
+      149.5,
+      0.1365
+    ],
+    [
+      157.8,
+      0.1365
+    ]
+  ],
+  "diagrid_evidence": "R01 sourced end-zone CHS diameters and walls; architectural builder replaces solid proxies with hollow sections. Intermediate diameters and thicknesses interpolate; not a structural design.",
+  "full_floor_levels": [
+    1,
+    7,
+    13,
+    19,
+    25,
+    31,
+    37,
+    38,
+    39,
+    40
+  ],
+  "atrium_inner_radius_min_m": 13.7
+}

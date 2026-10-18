@@ -16,6 +16,21 @@ The researched model combines documented building facts, observations from publi
 | R08 | [Denton — Level 30 refurbishment](https://www.denton.co.uk/projects/an-upgrade-for-new-potential-clients-at-the-gherkin-30-st-mary-axe), fit-out contractor | Mechanical/electrical refurbishment, air-handling work and WC alterations. | Evidence that interiors and services change over time. A single present-day interior cannot be inferred by combining all dated sources. |
 | R09 | [Speirs Major — 30 St Mary's Axe](https://www.speirsandmajor.com/projects/410/30-st-mary-s-axe), project lighting designer | Entrance, core and atrium lighting approach. | Qualitative reference only; our rectangular office luminaires are layout proxies, not the installed product schedule. |
 
+## Architectural v3 evidence
+
+Further dimensions in the existing primary documents are used in v3: R01 p.42 specifies fabricated triangular dome sections of **110 × 150 mm**; p.43 gives **40 mm** wall thickness for the **508 mm** lower diagrid CHS and **12.5 mm** for the **273 mm** upper CHS. R06 specifies a **2.4 m diameter** apex glass lens. Gross dimensions are represented; interpolation, polygonal approximation and unknown connection details remain explicit.
+
+| ID | Primary source | Supported information | Model use and limit |
+| --- | --- | --- | --- |
+| R10 | [Foster + Partners' project description, hosted by ArchDaily](https://www.archdaily.com/928285/30-st-mary-axe-tower-foster-plus-partners), explicitly attributed to the architects | 7 m aluminium lobby panels; landscaped plaza with trees and low stone seating walls; upper dining/bar uses; triangular and diamond facade panels and ventilated glazing cavity. | V3 adopts the panel height and qualitative architecture. Site dimensions, tenant layouts and facade subdivisions remain inferred. No glass fabrication schedule is reconstructed. |
+| R11 | [Boon Edam's supplier contribution, hosted by Archello](https://archello.com/es/project/30-st-mary-axe), Swiss Re section | Four Crystal Tourniket all-glass revolving doors supplied and installed. | Four revolving-door proxies. The source does not establish installed diameter, leaf count or coordinates. Search-index text was available; direct page retrieval was restricted. |
+| R12 | [Searcys at The Gherkin, 2022 summer brochure](https://searcys.co.uk/wp-content/uploads/2022/05/Searcys_at_The_Gherkin_Summer_Brochure.pdf), operator's plans, PDF pages 5 and 7 (printed 8–9 and 12–13) | Iris is shown as an open, approximately D-shaped mezzanine with a circular stair; Helix has a lift lobby; five private dining rooms occupy level 38. | V3 replaces the repeated core on the highest floor with that qualitative topology and adds five dining-room proxies. Mezzanine scale, all coordinates, stair geometry, room rectangles, furniture and correspondence with model indices are inferred. These marketing diagrams are not coordinated construction drawings. |
+| R13 | [Sociability, Searcys at The Gherkin](https://desktop.sociability.app/venuedetails/searcys-at-the-gherkin-30-st-mary-axe-london), first-hand access observations dated October 2024 | Upstairs bar reached by curved stairs or a small lift. | Supports the existence of a bar-access lift. Its assumed central position, size and travel are not established by a surveyed asset schedule. No compliance conclusion is adopted. |
+
+The four user-supplied images are observations, not measured drawings: **U01** is the exterior aerial, **U02** the dome interior/apex surround, **U03** the entrance chevrons/recessed glazing, and **U04** the architectural cutaway. They guide appearance and presentation only. The images, local filenames and metadata are not distributed. U04 does not establish an actual tenant fit-out or coordinates of hidden systems.
+
+V3 ends its two inferred transfer shuttles at model L39 and adds a separate small bar-access lift proxy. This is an arrangement for the procedural model, not a reconciliation of the historical 16/18 passenger-lift totals. Main-stair termination, bar access, service penetrations and fire separation require verified drawings before engineering use.
+
 ## Conflicts and unresolved information
 
 - **Lift totals:** 16 in R02 versus 18 in R06. No verified asset schedule reconciles them. The model contains 16 office shaft/car proxies plus two assumed upper shuttles. The 6/5/5 bank split and every travel limit remain assumptions.
@@ -43,3 +58,4 @@ These identify the public documents inspected, without distributing their drawin
 | R03, level 10, 1 page | `c8eac2b67e428cc4bf0416012b6c7abe8cf469fa4f9ff64476fb481da13eb6fd` |
 | R03, level 14, 1 page | `cb9a874d061c4604e80c2edc0b21b137856cc06d700a1ab8a04d4eebd3b9be7e` |
 | R04, 25 pages | `3288dfe5a308736c4307ae1b00f4e6393eb12136127846220d106dc141652d74` |
+| R12, 15 pages | `69b04c304ea65447b1ca8f074bc673b3adc7a392da4fd2c2f640dcf134375f4e` |

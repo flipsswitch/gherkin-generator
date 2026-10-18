@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 import blender_gherkin as host
 from gherkin import load_parameters, write_json
-from interior.generator import COLORS, generate, load_settings, schedules
+from interior.generator import COLORS, default_exterior, default_settings, generate, load_settings, schedules
 from interior.validation import validate
 from privacy import create_output_directory, error_summary
 
@@ -27,7 +27,8 @@ def material(category, opacity):
     shader.inputs['Base Color'].default_value = (*color, 1)
     shader.inputs['Roughness'].default_value = 0.65
     shader.inputs['Metallic'].default_value = 0.3 if category in ('INT_FIRE', 'INT_COLD', 'INT_HOT', 'INT_RAILS') else 0
-    mat.diffuse_color = (*color, 1)
+    shader.inputs['Alpha'].default_value = opacity
+    mat.diffuse_color = (*color, opacity)
     return mat
 
 
@@ -93,7 +94,7 @@ def capture(scene, output, recipe, level):
 def main():
     started = time.perf_counter()
     parser = argparse.ArgumentParser(description='Generate the separate conceptual interior in Blender.')
-    parser.add_argument('--variant', choices=['original', 'researched'], default='original')
+    parser.add_argument('--variant', choices=['original', 'researched', 'architectural'], default='original')
     parser.add_argument('--parameters', type=Path)
     parser.add_argument('--exterior-parameters', type=Path)
     parser.add_argument('--output-dir', type=Path, default=Path('outputs/gherkin-interior'))
@@ -106,8 +107,8 @@ def main():
         parser.error('Run in background mode to protect open work')
     if not 1 <= args.capture_level <= 40:
         parser.error('Capture level must be between 1 and 40')
-    settings = load_settings(args.parameters or ROOT / ('interior/parameters-researched.json' if args.variant == 'researched' else 'interior/parameters.json'))
-    exterior = load_parameters(args.exterior_parameters or ROOT / ('research/parameters-exterior.json' if settings.get('variant') == 'researched' else 'parameters.json'))
+    settings = load_settings(args.parameters or default_settings(args.variant))
+    exterior = load_parameters(args.exterior_parameters or default_exterior(settings))
     if args.verify:
         recipe = generate(exterior, settings)
         bpy.ops.wm.open_mainfile(filepath=str(args.verify.resolve()))
@@ -172,6 +173,9 @@ def main():
                 obj.data.energy *= 0.08
         scene.world.node_tree.nodes['Background'].inputs['Strength'].default_value = 0.35
         scene.cycles.samples = 24
+        if recipe.get('detail_preset') == 'architectural':
+            from interior.presentation_architectural import configure
+            configure(scene)
         bpy.ops.wm.save_as_mainfile(filepath=str(filename))
         write_json(output / 'object-mapping.json', {'objects': mapping, **{key: recipe[key] for key in ('components', 'doors', 'rooms', 'networks', 'electrical_circuits', 'electrical_networks', 'lift_schedule') if key in recipe}})
         record('saved', objects=len(mapping))
@@ -194,7 +198,11 @@ def main():
             bpy.ops.export_scene.gltf(filepath=str(output / 'gherkin-interior.glb'), export_format='GLB', use_selection=True, export_extras=True, export_cameras=False, export_lights=False)
             record('glb_exported')
         if args.render:
-            capture(bpy.context.scene, output, recipe, args.capture_level)
+            if recipe.get('detail_preset') == 'architectural':
+                from interior.presentation_architectural import capture as architectural_capture
+                architectural_capture(bpy.context.scene, output, recipe, args.capture_level)
+            else:
+                capture(bpy.context.scene, output, recipe, args.capture_level)
             record('captures_saved', level=args.capture_level)
         record('complete', counts=recipe['counts'])
     except Exception as error:

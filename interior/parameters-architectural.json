@@ -1,0 +1,414 @@
+{
+  "spec_id": "gherkin-public-evidence-architectural-v3",
+  "evidence_status": "Public-source dimensional anchors, inferred core and services, and photo-informed architectural detail. Not an as-built, structural design, coordinated construction or engineering approval model.",
+  "units": "metres",
+  "office_levels": [
+    3,
+    35
+  ],
+  "plant_levels": [
+    2,
+    36
+  ],
+  "amenity_levels": [
+    37,
+    40
+  ],
+  "stairs": {
+    "centres_x_m": [
+      -1.65,
+      1.65
+    ],
+    "flight_width_m": 1.35,
+    "central_gap_m": 0.2,
+    "landing_length_m": 1.25,
+    "going_m": 0.28,
+    "risers_per_flight": 14,
+    "waist_m": 0.15,
+    "wall_m": 0.18,
+    "handrail_height_m": 0.95,
+    "door_width_m": 1.05,
+    "poses_m_radians": [
+      [
+        4.2,
+        7.7,
+        -0.5235987755982988
+      ],
+      [
+        4.2,
+        -7.7,
+        3.665191429188092
+      ]
+    ]
+  },
+  "lifts": {
+    "centres_x_m": [
+      -3.0,
+      0.0,
+      3.0
+    ],
+    "centres_y_m": [
+      -6.0,
+      6.0
+    ],
+    "shaft_size_m": [
+      2.3,
+      2.4
+    ],
+    "wall_m": 0.18,
+    "outer_last_level": 37,
+    "middle_last_level": 39,
+    "door_width_m": 1.05,
+    "bank_angles_degrees": [
+      0,
+      120,
+      240
+    ],
+    "bank_counts": [
+      6,
+      5,
+      5
+    ],
+    "bank_last_levels": [
+      36,
+      22,
+      16
+    ],
+    "bank_first_served_levels": [
+      21,
+      3,
+      2
+    ],
+    "bank_radii_m": [
+      5.4,
+      8.1,
+      10.8
+    ],
+    "bank_lateral_offset_m": 2.3,
+    "upper_shuttles": [
+      [
+        -3.5,
+        5.8,
+        0
+      ],
+      [
+        -3.5,
+        -5.8,
+        3.141592653589793
+      ]
+    ],
+    "shuttle_first_level": 37,
+    "shuttle_last_level": 39,
+    "evidence": "R02 states 16 office passenger lifts; R03 plans suggest three bank sectors; R04 shows transfers at 21/22. Exact bank allocation/stops and two upper shuttle proxies are assumptions. R06 historic total 18 remains an unresolved scope conflict. Architectural v3 ends transfer shuttles at model L39 and adds a separate small bar-access lift proxy from R12/R13 observations; this does not resolve the historical passenger-lift count conflict."
+  },
+  "service_shafts": {
+    "centres_x_m": [
+      -4.0,
+      4.0
+    ],
+    "size_m": [
+      0.6,
+      1.4
+    ],
+    "wall_m": 0.12,
+    "enclosure_height_m": 2.9,
+    "rectangles_m_radians": [
+      [
+        1.5,
+        0,
+        0.8,
+        1.2,
+        0
+      ],
+      [
+        -2,
+        0,
+        1.4,
+        1.4,
+        0
+      ],
+      [
+        0,
+        3,
+        1.8,
+        1.2,
+        0
+      ],
+      [
+        0,
+        -3,
+        1.2,
+        1.2,
+        0
+      ]
+    ]
+  },
+  "rooms": {
+    "partition_height_m": 2.85,
+    "wall_m": 0.12,
+    "door_width_m": 1.0,
+    "door_height_m": 2.1,
+    "service_centres_x_m": [
+      -6.2,
+      6.2
+    ],
+    "service_centres_y_m": [
+      -3.8,
+      0.0,
+      3.8
+    ],
+    "service_size_m": [
+      3.2,
+      3.2
+    ],
+    "meeting_radius_m": 18,
+    "meeting_size_m": [
+      4.6,
+      4.4
+    ]
+  },
+  "fitout": {
+    "desk_m": [
+      1.5,
+      0.75,
+      0.74
+    ],
+    "workstation_clearance_m": [
+      1.65,
+      2.2
+    ],
+    "grid_m": [
+      1.8,
+      2.4
+    ],
+    "core_clear_radius_m": 13.5,
+    "radial_aisle_width_m": 1.8,
+    "room_clearance_m": 0.6,
+    "facade_clearance_m": 0.75
+  },
+  "services": {
+    "routing_grid_m": 0.5,
+    "head_grid_multiple": 7,
+    "pipe_height_m": 3.05,
+    "head_height_m": 2.7,
+    "fire_radius_m": 0.04,
+    "branch_radius_m": 0.022,
+    "water_radius_m": 0.025,
+    "drain_radius_m": 0.06,
+    "pipe_radial_sides": 8,
+    "fire_root_m": [
+      1.5,
+      0
+    ],
+    "wet_root_m": [
+      -2,
+      0
+    ],
+    "fan_coil_count_per_floor": 6,
+    "ceiling_reference_m": 2.75
+  },
+  "mesh_limits": {
+    "vertices_per_object": 32768,
+    "triangles_per_object": 65536,
+    "components_per_object": 48,
+    "native_objects_per_checkpoint": 64
+  },
+  "validation": {
+    "minimum_stair_headroom_m": 2.0,
+    "native_vertex_tolerance_m": 2e-05,
+    "geometry_tolerance_m": 1e-06
+  },
+  "exclusions": [
+    "No survey, coordinated construction drawings, exact core dimensions or current tenant fit-out are available; plan-derived locations are approximate.",
+    "The original demo remains unchanged. This preset combines dated public sources, not one verified historical or current state.",
+    "Lift bank allocation, travel limits and two upper shuttle proxies are inferred; 16-office-lift and 18-passenger-lift public totals have unresolved scope differences.",
+    "Model level indices and exceptional lobby/top floor heights are approximate; published transfer-level labels are stored as evidence, not surveyed stop coordinates.",
+    "No structural loads, member design, connections, foundations or lateral analysis; radial beam and column sections are proxies.",
+    "No fire strategy, egress-capacity, sprinkler coverage/hydraulics, accessibility or code-compliance assessment.",
+    "Wet risers and basin branches are conceptual. Drainage branches, pressure zoning, insulation, valves and rated penetrations are not designed.",
+    "Four-pipe fan coils are equipment proxies with labelled connection stubs; complete HVAC ductwork and hydronic distribution are not designed.",
+    "Electrical routes are geometric networks only: voltage, conductor ratings, loads, protection, fault levels, earthing, selectivity, emergency supply and lux are unverified.",
+    "DALI link/address groups are illustrative; device commissioning and protocol capacity/compliance are not verified.",
+    "Pipe-system clearance, protected-shaft routing and terminal connectivity checks are limited checks, not an exhaustive clash or engineering coordination review.",
+    "Basement, accommodation stairs at published levels 19-25, separate cafe pavilion, retail tenancy, surveyed entrance coordinates, accessible door strategy and exact restaurant/kitchen layout remain omitted.",
+    "Facade triangles and mullions are a computational subdivision, not a reproduction of the 5,500 installed triangular and diamond panels. Double-skin glazing, blinds, drainage and operable vents are not fabricated assemblies.",
+    "The entrance uses four revolving-door proxies, photo-informed chevrons and a 7 m lobby panel height. Door setting-out, accessibility, operation, fixing and weather seals are unverified.",
+    "Triangular crown members reproduce the published gross section envelope; internal plate thickness and welded joints are unknown. The apex lens is a faceted geometric approximation.",
+    "Added furniture, interior glass, planting and plaza detail are illustrative. Public plans and supplied cutaway imagery do not establish current tenant furnishings.",
+    "Architectural captures temporarily hide MEP and cut native meshes. The complete saved model retains electrical and service geometry.",
+    "Upper amenity topology follows dated operator diagrams: open Iris mezzanine, circular stair and five private dining rooms. All setting-out, capacities, fire separation, main-stair termination and small bar-lift details remain inferred; the public plans are not construction drawings."
+  ],
+  "variant": "researched",
+  "raised_floor_m": 0.18,
+  "raised_panel_m": 0.03,
+  "clear_ceiling_m": 2.75,
+  "legacy_core_columns_m": [],
+  "source_registry": "research/EVIDENCE.md",
+  "structure": {
+    "core_radius_m": 13.5,
+    "beam_depth_m": 0.42,
+    "beam_width_m": 0.22,
+    "beam_web_m": 0.012,
+    "beam_flange_m": 0.018,
+    "radial_beam_step_degrees": 10,
+    "core_column_size_m": 0.3,
+    "core_column_count": 18,
+    "hoop_radius_m": 0.09,
+    "evidence": "R01 supports steel core, radial beams on 10-degree centres and perimeter hoops. Core bearing radius, member sections/positions, dome lattice sampling and omitted collisions are inferred."
+  },
+  "electrical": {
+    "source_a_m": [
+      0,
+      3
+    ],
+    "source_b_m": [
+      0,
+      -3
+    ],
+    "control_root_m": [
+      -0.5,
+      3
+    ],
+    "power_height_above_slab_m": 0.075,
+    "lighting_route_height_m": 2.96,
+    "control_route_height_m": 2.84,
+    "luminaire_height_m": 2.75,
+    "luminaire_grid_m": 3.0,
+    "route_radius_m": 0.012,
+    "riser_radius_m": 0.045,
+    "control_radius_m": 0.007,
+    "tray_width_m": 0.12,
+    "tray_height_m": 0.035,
+    "outlets_per_circuit": 8,
+    "lights_per_circuit": 12,
+    "addresses_per_control_link": 64,
+    "evidence": "R04 dual power supply; R05 DALI, LON/BMS integration and occupancy/daylight multisensors. All board positions, feed assignment, outlets, circuit grouping, cable/tray dimensions and routes are inferred. No electrical ratings are selected."
+  },
+  "architecture": {
+    "target": "Original completed-building appearance and furnished cutaway inspired by user references; tenant layout and site coordinates remain inferred.",
+    "crown": {
+      "section_m": [
+        0.11,
+        0.15
+      ],
+      "lens_diameter_m": 2.4,
+      "nodes_per_ring": 36,
+      "ring_z_m": [
+        157.8,
+        162.95,
+        167.1,
+        172.0,
+        176.2,
+        178.4
+      ],
+      "evidence": "R01: 30 m diameter, 22 m rise, fabricated triangular 110 x 150 mm sections. R06: 2.4 m apex lens. Ring elevations, member count, gross solid section, lens profile and surround are inferred; connections and plate thickness are not designed. The squared-radius cap uses (1-t)(1+0.25t); its taper is inferred from imagery, not measured.",
+      "profile_factor": 0.25
+    },
+    "diagrid": {
+      "wall_base_m": 0.04,
+      "wall_top_m": 0.0125,
+      "evidence": "R01: 508 x 40 mm ground-L2, 273 x 12.5 mm L36-38 CHS. Intermediate sizes interpolate; joint geometry and loading are unverified."
+    },
+    "entrance": {
+      "portal_xz_m": [
+        [
+          -12.2,
+          -0.5
+        ],
+        [
+          12.2,
+          -0.5
+        ],
+        [
+          9.0,
+          8.305263
+        ],
+        [
+          4.7,
+          16.610526
+        ],
+        [
+          -4.7,
+          16.610526
+        ],
+        [
+          -9.0,
+          8.305263
+        ]
+      ],
+      "screen_y_m": -20.4,
+      "door_centres_x_m": [
+        -8.4,
+        -2.2,
+        2.2,
+        8.4
+      ],
+      "door_diameter_m": 2.4,
+      "door_height_m": 2.8,
+      "lobby_panel_height_m": 7.0,
+      "evidence": "R11 supplier states four Crystal Tourniket revolving doors. R10 states 7 m aluminium lobby panels. U03 shows recessed entry and white chevrons. Locations, sizes except panel height, door leaves and canopy are inferred; front is model -Y, not a surveyed compass bearing."
+    },
+    "mullion_radius_m": 0.022,
+    "presentation": {
+      "cutaway_front_plane_y_m": -3.0,
+      "cutaway_start_z_m": 29.0,
+      "evidence": "U04 is a visual presentation and furnishing reference, not dimensional evidence."
+    },
+    "upper_amenity": {
+      "mezzanine_radius_m": 10.6,
+      "mezzanine_centre_m": [
+        -0.8,
+        0
+      ],
+      "mezzanine_flat_x_m": -8.0,
+      "stair_centre_m": [
+        6.0,
+        0
+      ],
+      "stair_opening_radius_m": 2.75,
+      "stair_radii_m": [
+        1.1,
+        2.6
+      ],
+      "stair_risers": 26,
+      "private_dining": {
+        "radius_m": 11.1,
+        "start_angle_degrees": 134,
+        "angle_step_degrees": 23,
+        "room_size_m": [3.4, 4.0],
+        "evidence": "Five rooms supported by R12; rectangular footprints, dimensions, orientation and inward door setting-out inferred to clear the shuttle shafts."
+      },
+      "service_penetrations_m_radians": [
+        [
+          1.5,
+          0,
+          0.2,
+          0.2,
+          0
+        ],
+        [
+          -2,
+          0,
+          0.8,
+          0.8,
+          0
+        ],
+        [
+          -0.2,
+          3,
+          0.8,
+          0.3,
+          0
+        ],
+        [
+          0,
+          -3,
+          0.3,
+          0.3,
+          0
+        ]
+      ],
+      "evidence": "R12 operator plan shows an open, approximately D-shaped Iris mezzanine and circular stair, Helix lift lobby and five private dining rooms on L38. R13 first-hand access observations report a small lift to the bar. Scale, orientation, dimensions, riser count, central lift position, main stair termination at L39 and service penetrations are inferred; no egress or accessibility design."
+    }
+  }
+}

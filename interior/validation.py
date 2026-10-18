@@ -177,10 +177,12 @@ def validate(recipe, settings, readback=None):
         comp = next(c for c in recipe['components'] if c['level'] == floor['level'] and c['role'] == 'perforated_slab')
         vertices, faces = component_mesh(comp, objects)
         thickness = max(v[2] for v in vertices) - min(v[2] for v in vertices)
-        expected_volume = (area(floor['profile']) - sum(r[2] * r[3] for r in floor['openings'])) * thickness
+        polygon_holes = floor.get('opening_polygons', [])
+        expected_volume = (area(floor['profile']) - sum(r[2] * r[3] for r in floor['openings']) - sum(abs(area(poly)) for poly in polygon_holes)) * thickness
         difference = abs(signed_volume(vertices, faces) - expected_volume)
         blocked = []
-        for j, hole in enumerate(floor['openings']):
+        centres = [hole[:2] for hole in floor['openings']] + [[sum(p[k] for p in poly) / len(poly) for k in (0, 1)] for poly in polygon_holes]
+        for j, hole in enumerate(centres):
             for a, b, c in faces:
                 if triangle_height(hole[0], hole[1], vertices[a], vertices[b], vertices[c]) is not None:
                     blocked.append(j)
@@ -193,6 +195,9 @@ def validate(recipe, settings, readback=None):
     if recipe.get('variant') == 'researched':
         from interior.validation_researched import researched_checks
         checks.extend(researched_checks(recipe, settings, objects))
+    if recipe.get('detail_preset') == 'architectural':
+        from interior.validation_architectural import architectural_checks
+        checks.extend(architectural_checks(recipe, settings, objects))
     return {'passed': all(c['pass'] for c in checks), 'checks': checks,
             'geometry_source': 'reopened native mesh vertices and triangles' if readback is not None else 'generated meshes; native host verification still required',
             'layout_source': 'parameter clearance envelopes, tied to verified component mappings in native reports',

@@ -11,7 +11,7 @@ sys.path.insert(0, str(ROOT))
 import microstation_gherkin as host
 from MSPyMstnPlatform import MstnView, PyCadInputQueue
 from gherkin import load_parameters, write_json
-from interior.generator import generate, load_settings, schedules
+from interior.generator import default_exterior, generate, load_settings, schedules
 from interior.validation import validate
 from privacy import create_output_directory, error_summary
 
@@ -52,7 +52,7 @@ def build(settings_path=None, exterior_path=None):
         raise RuntimeError('Active model must be empty; existing geometry is never removed')
     create_output_directory(output)
     settings = load_settings(settings_path or os.environ.get('GHERKIN_INTERIOR_PARAMETERS') or ROOT / 'interior/parameters.json')
-    exterior = load_parameters(exterior_path or os.environ.get('GHERKIN_PARAMETERS') or ROOT / ('research/parameters-exterior.json' if settings.get('variant') == 'researched' else 'parameters.json'))
+    exterior = load_parameters(exterior_path or os.environ.get('GHERKIN_PARAMETERS') or default_exterior(settings))
     log, mapping = [], {'objects': [], 'components': [], 'rooms': [], 'doors': [], 'networks': []}
     def record(event, **values):
         log.append({'elapsed_seconds': round(time.perf_counter() - started, 6), 'event': event, **values})

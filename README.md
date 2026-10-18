@@ -1,8 +1,10 @@
 # Make your own Gherkin
 
-Generate an editable, approximate model of London's Gherkin in **MicroStation or Blender**. The same small Python geometry library drives both versions: 40 slabs, six spiralling recesses, 720 diagrid members, and a triangulated glass facade with a closed crown.
+The separate [architectural detail preset](research/ARCHITECTURAL.md) adds a recessed entrance, revolving doors, a revised crown and furnished cutaway views. Select `--variant architectural` for the interior Blender script, or run `interior/microstation_architectural.py` inside MicroStation. Documented dimensions and inferred details remain labeled.
 
-![Gherkin generated in Blender](docs/images/isometric.png)
+Generate an editable, approximate model of London's Gherkin in **MicroStation or Blender**. Both applications use the same Python geometry library. The original exterior preset creates 40 slabs, six spiralling recesses, 720 diagrid members, and a triangulated glass facade with a closed crown; the optional interior presets add their own documented geometry.
+
+![Architectural v3 cutaway generated in Blender, with inferred interiors](research/architectural-images/architectural-cutaway.png)
 
 I originally did this experiment with my own custom MicroStation MCP. That MCP remains private and is not included here. I converted the result into standalone scripts so you can have your own Gherkin. You do not need my MCP, an AI account, API keys, or any downloaded building assets to run them.
 
@@ -63,7 +65,7 @@ The optional [researched preset](research/parameters-exterior.json) uses additio
 | Public reconstruction conventions | 4.2 m teaching module and the rotational relationship used by earlier reconstruction studies |
 | Explicit approximations in this experiment | Radius knots, exact slab schedule, recess dimensions, member sizes, offsets, crown sampling and glass opacity |
 
-This is a visual geometry experiment. It does not establish structural, fire-safety, code-compliance, survey, or as-built accuracy. The diagrid stops at 168 m; the crown is a simplified facade cap. The glass surface has an intentionally open base.
+This is a visual geometry experiment. It does not establish structural, fire-safety, code-compliance, survey, or as-built accuracy. In the original exterior preset, the diagrid stops at 168 m and the crown is a simplified facade cap. The glass surface has an intentionally open base. The architectural preset has separate crown members and apex glazing, with its remaining assumptions recorded in its own documentation.
 
 For a variation, copy `parameters.json`. Blender accepts `--parameters path/to/your.json`; MicroStation reads the optional `GHERKIN_PARAMETERS` environment variable, or the file beside the script. Parameters remain bounded and internally validated. The regression fixture targets the supplied defaults, so a deliberate variation will not match the default-model tests.
 

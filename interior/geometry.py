@@ -157,7 +157,7 @@ def stair_flight(x0, x1, y0, direction, z, risers, rise, going, waist):
     return vertices, faces
 
 
-def perforated_slab(poly, holes, z, thickness):
+def perforated_slab(poly, holes, z, thickness, opening_polygons=None):
     for hole in holes:
         if not all(clear_point(p, poly, 1e-5) for p in corners(hole)):
             raise ValueError(f'Shaft opening {hole} lies outside its slab at {z} m')
@@ -165,7 +165,13 @@ def perforated_slab(poly, holes, z, thickness):
         for b in holes[i + 1:]:
             if overlaps(a, b):
                 raise ValueError(f'Slab openings must be disjoint rectangles: {a}, {b}')
-    loops = [[[round(v, 6) for v in xy] for xy in loop] for loop in [poly] + [corners(hole) for hole in holes]]
+    opening_polygons = opening_polygons or []
+    for opening in opening_polygons:
+        if len(opening) < 3 or not all(clear_point(p, poly, 1e-5) for p in opening):
+            raise ValueError('Polygonal opening lies outside its slab')
+        if any(any(in_rect(p, rect) for p in opening) or any(inside(p, opening) for p in corners(rect)) for rect in holes):
+            raise ValueError('Polygonal and rectangular openings overlap')
+    loops = [[[round(v, 6) for v in xy] for xy in loop] for loop in [poly] + [corners(hole) for hole in holes] + opening_polygons]
     xs = sorted({x for loop in loops for x, _ in loop})
     cells = []
     for xl, xr in zip(xs, xs[1:]):
