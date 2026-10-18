@@ -12,6 +12,7 @@ from mathutils import Vector
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
 from gherkin import cross, dot, generate, geometry_digest, load_parameters, mesh_for_object, sub, write_json
+from privacy import clean_png, create_output_directory, error_summary
 
 
 def material(name, opacity):
@@ -113,18 +114,23 @@ def presentation(scene):
     scene.render.image_settings.color_mode = 'RGBA'
     scene.render.film_transparent = False
     scene.render.use_stamp = False
+    scene.render.filepath = '//renders/'
     scene.view_settings.view_transform = 'AgX'
     return camera
 
 
+def render_png(scene, filename):
+    scene.render.filepath = str(filename)
+    bpy.ops.render.render(write_still=True)
+    clean_png(filename)
+
+
 def render_views(scene, output):
     camera = scene.camera
-    scene.render.filepath = str(output / 'isometric.png')
-    bpy.ops.render.render(write_still=True)
+    render_png(scene, output / 'isometric.png')
     camera.location = (0, -400, 90)
     aim(camera, (0, 0, 90))
-    scene.render.filepath = str(output / 'elevation.png')
-    bpy.ops.render.render(write_still=True)
+    render_png(scene, output / 'elevation.png')
     camera.location = (220, -350, 200)
     aim(camera, (0, 0, 88))
     changed = []
@@ -141,8 +147,7 @@ def render_views(scene, output):
                                   dist=1e-6, plane_co=(0, 0, 0), plane_no=(0, 1, 0), clear_inner=True)
             mesh.to_mesh(obj.data)
             mesh.free()
-        scene.render.filepath = str(output / 'cutaway.png')
-        bpy.ops.render.render(write_still=True)
+        render_png(scene, output / 'cutaway.png')
     finally:
         for obj, original, temporary in changed:
             obj.data = original
@@ -172,7 +177,7 @@ def main():
             raise RuntimeError('Saved model verification failed')
         return
     output = args.output_dir.resolve()
-    output.mkdir(parents=True, exist_ok=False)
+    create_output_directory(output)
     log = []
 
     def record(event, **values):
@@ -241,7 +246,7 @@ def main():
         record('complete', counts=recipe['counts'])
         print(json.dumps({'passed': True, 'counts': recipe['counts'], 'elapsed_seconds': time.perf_counter() - started}))
     except Exception as error:
-        record('error', type=type(error).__name__, message=str(error))
+        record('error', **error_summary(error))
         raise
 
 

@@ -326,14 +326,16 @@ def write_json(filename, data):
 
 
 def main():
+    from privacy import ignore_output_file
+
     parser = argparse.ArgumentParser(description='Generate the approximate Gherkin geometry without CAD or an MCP server.')
     parser.add_argument('--parameters', type=Path, default=ROOT / 'parameters.json')
-    parser.add_argument('--output', type=Path, default=Path('gherkin-geometry.json'))
+    parser.add_argument('--output', type=Path, default=Path('outputs/geometry.json'))
     args = parser.parse_args()
     if args.output.exists():
         parser.error('Output exists; choose a new filename')
     result = generate(load_parameters(args.parameters))
-    args.output.parent.mkdir(parents=True, exist_ok=True)
+    ignore_output_file(args.output)
     write_json(args.output, result)
     print(json.dumps(result['counts']))
 

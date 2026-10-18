@@ -14,6 +14,7 @@ import blender_gherkin as host
 from gherkin import load_parameters, write_json
 from interior.generator import COLORS, generate, load_settings, schedules
 from interior.validation import validate
+from privacy import create_output_directory, error_summary
 
 
 def material(category, opacity):
@@ -43,26 +44,22 @@ def capture(scene, output, recipe, level):
         camera.data.ortho_scale = floor['radius'] * 2.3
         camera.location = (0, -0.001, z + 80)
         host.aim(camera, (0, 0, z))
-        scene.render.filepath = str(output / 'floor-plan.png')
-        bpy.ops.render.render(write_still=True)
+        host.render_png(scene, output / 'floor-plan.png')
         camera.location = (48, -64, z + 58)
         host.aim(camera, (0, 0, z + 0.8))
-        scene.render.filepath = str(output / 'furnished-floor.png')
-        bpy.ops.render.render(write_still=True)
+        host.render_png(scene, output / 'furnished-floor.png')
         for obj in meshes:
             obj.hide_render = obj.get('level') != level or obj.get('stage') == 3
         camera.location = (0, -0.001, z + 80)
         host.aim(camera, (0, 0, z))
-        scene.render.filepath = str(output / 'services-plan.png')
-        bpy.ops.render.render(write_still=True)
+        host.render_png(scene, output / 'services-plan.png')
         if recipe.get('variant') == 'researched':
             for label, categories in [('electrical-power-plan', {'INT_POWER', 'INT_BOARDS'}),
                                       ('electrical-lighting-plan', {'INT_LIGHTS', 'INT_CONTROLS', 'INT_BOARDS'})]:
                 for obj in meshes:
                     category = next((c.name for c in obj.users_collection), '')
                     obj.hide_render = obj.get('level') != level or category == 'INT_RAISED' or obj.get('stage') in (3, 4) or (obj.get('stage') == 5 and category not in categories)
-                scene.render.filepath = str(output / (label + '.png'))
-                bpy.ops.render.render(write_still=True)
+                host.render_png(scene, output / (label + '.png'))
         for obj in meshes:
             obj.hide_render = any(c.name.startswith('GHR_GLAZING') for c in obj.users_collection)
         changed = []
@@ -83,8 +80,7 @@ def capture(scene, output, recipe, level):
             camera.location = (230, -370, 210)
             host.aim(camera, (0, 0, 86))
             scene.render.resolution_x, scene.render.resolution_y = 1000, 1400
-            scene.render.filepath = str(output / 'interior-cutaway.png')
-            bpy.ops.render.render(write_still=True)
+            host.render_png(scene, output / 'interior-cutaway.png')
         finally:
             for obj, original, temporary in changed:
                 obj.data = original
@@ -124,7 +120,7 @@ def main():
             raise RuntimeError('Reopened interior verification failed')
         return
     output = args.output_dir.resolve()
-    output.mkdir(parents=True, exist_ok=False)
+    create_output_directory(output)
     log = []
     def record(event, **values):
         log.append({'elapsed_seconds': round(time.perf_counter() - started, 6), 'event': event, **values})
@@ -202,7 +198,7 @@ def main():
             record('captures_saved', level=args.capture_level)
         record('complete', counts=recipe['counts'])
     except Exception as error:
-        record('error', type=type(error).__name__, message=str(error))
+        record('error', **error_summary(error))
         raise
 
 

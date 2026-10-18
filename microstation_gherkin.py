@@ -15,6 +15,7 @@ from MSPyMstnPlatform import ISessionMgr, MstnView, PyCadInputQueue
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
 from gherkin import generate, geometry_digest, load_parameters, write_json
+from privacy import create_output_directory, error_summary
 
 
 def success(status, action):
@@ -163,7 +164,7 @@ def build():
     if not math.isfinite(units) or units <= 0:
         raise RuntimeError('Invalid native model unit scale')
     output = report_folder(Path(str(file.GetFileName())))
-    output.mkdir(exist_ok=False)
+    create_output_directory(output)
     log = []
     mapping = {'counts': recipe['counts'], 'objects': [], 'nodes': recipe['nodes'], 'members': recipe['members'], 'floors': recipe['floors']}
 
@@ -226,10 +227,10 @@ def build():
         PyCadInputQueue.SendKeyin('filedesign')
         record('complete', counts=recipe['counts'])
         print('Gherkin: created, saved and verified ' + str(len(mapping['objects'])) + ' native elements.')
-        print('Reports: ' + str(output))
+        print('Reports saved beside the active DGN in its Gherkin report folder.')
     except Exception as error:
         write_json(output / 'object-mapping.json', mapping)
-        record('error', type=type(error).__name__, message=str(error))
+        record('error', **error_summary(error))
         raise
 
 

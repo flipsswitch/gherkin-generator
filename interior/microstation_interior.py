@@ -13,6 +13,7 @@ from MSPyMstnPlatform import MstnView, PyCadInputQueue
 from gherkin import load_parameters, write_json
 from interior.generator import generate, load_settings, schedules
 from interior.validation import validate
+from privacy import create_output_directory, error_summary
 
 
 def context():
@@ -49,7 +50,7 @@ def build(settings_path=None, exterior_path=None):
     model, file, units, output = context()
     if any(True for _ in model.GetDgnModel().GetGraphicElements()):
         raise RuntimeError('Active model must be empty; existing geometry is never removed')
-    output.mkdir(exist_ok=False)
+    create_output_directory(output)
     settings = load_settings(settings_path or os.environ.get('GHERKIN_INTERIOR_PARAMETERS') or ROOT / 'interior/parameters.json')
     exterior = load_parameters(exterior_path or os.environ.get('GHERKIN_PARAMETERS') or ROOT / ('research/parameters-exterior.json' if settings.get('variant') == 'researched' else 'parameters.json'))
     log, mapping = [], {'objects': [], 'components': [], 'rooms': [], 'doors': [], 'networks': []}
@@ -116,7 +117,7 @@ def build(settings_path=None, exterior_path=None):
         print('Gherkin interior: created, saved and verified ' + str(len(mapping['objects'])) + ' native meshes.')
     except Exception as error:
         write_json(output / 'object-mapping.json', mapping)
-        record('error', type=type(error).__name__, message=str(error))
+        record('error', **error_summary(error))
         raise
 
 

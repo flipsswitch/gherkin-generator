@@ -18,7 +18,7 @@ A separate [procedural interior version](interior/README.md) adds stairs, lifts,
 | MicroStation | Licensed MicroStation 2026 with its native Python support | Native 3D `.dgn` with solid floors, mesh framing and glazing |
 | Geometry only | Python 3.10 or newer | Portable geometry JSON and regression tests |
 
-Download this repository as a ZIP and extract it, or clone it. Keep `gherkin.py`, `parameters.json`, and your chosen adapter together. No `pip install` is needed. Other application versions and Blender on other operating systems have not been host-tested.
+Download this repository as a ZIP and extract it, or clone it. Keep `gherkin.py`, `privacy.py`, `parameters.json`, and your chosen adapter together. No `pip install` is needed. Other application versions and Blender on other operating systems have not been host-tested.
 
 ## Blender
 
@@ -70,6 +70,8 @@ For a variation, copy `parameters.json`. Blender accepts `--parameters path/to/y
 ## Outputs and tests
 
 Each adapter produces the model, a parameter snapshot, stable logical IDs and native-object mapping, a timed event/error log, validation results, and actual native geometry read-back. Blender uses native object names; MicroStation maps stable logical IDs to its assigned element IDs. Copies of facade seam vertices between batches are intentional and retain their logical IDs.
+
+New output folders contain a `.gitignore` that excludes everything inside, including custom parameter snapshots and future reports. The geometry-only command adds an exact ignore rule for its output file. Existing tracked files and forced Git additions are not protected by ignore rules. Structured error events omit exception text, and generated PNGs have text and EXIF metadata removed without changing their pixel data. Raw application consoles, native model metadata and customized inputs still require review before sharing. See the [privacy checks and release review](docs/RELEASE_REVIEW.md).
 
 Run the independent geometry regressions:
 

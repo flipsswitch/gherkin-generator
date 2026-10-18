@@ -1,0 +1,60 @@
+{
+  "date": "2026-10-17",
+  "baseline_commit": "0791a3bc8117784ec9969e497b17a2364a6e33c3",
+  "numerical_inputs_and_geometry_functions_unchanged": true,
+  "blender_version": "5.2.1 LTS",
+  "host_checks": {
+    "blender-exterior": {
+      "passed": true,
+      "native_checks": 131,
+      "design_checks": null,
+      "clean_pngs": 3,
+      "script_seconds": 27.723229
+    },
+    "blender-researched": {
+      "passed": true,
+      "native_checks": 2433,
+      "design_checks": 57,
+      "clean_pngs": 6,
+      "script_seconds": 242.139223
+    }
+  },
+  "saved_native_geometry_digests_matching_previous_researched_model": 2431,
+  "injected_failures": [
+    {
+      "adapter": "exterior",
+      "passed": true,
+      "exception_propagated": true,
+      "structured_error_log_private_data_omitted": true
+    },
+    {
+      "adapter": "interior",
+      "passed": true,
+      "exception_propagated": true,
+      "structured_error_log_private_data_omitted": true
+    }
+  ],
+  "historical_model_validation_hashes_preserved": true,
+  "source_sha256": {
+    "privacy.py": "0fae60c26ec49d524668c0e3b064cd569967238fe6e6990b3705ea30982b55d0",
+    "blender_gherkin.py": "448376b1e98f6839f81f2eeee2286fde270f8f5b8f9d4e8893730e02af0bd5d5",
+    "microstation_gherkin.py": "3718bea7d878ffdb89086131a0f94b0dadc684a28b1ace068a208964393fcc2d",
+    "interior/blender_interior.py": "96bc0f933f2f68fbf74ee76f38afdbecb92f6feea90d383dad498f20507d06fe",
+    "interior/microstation_interior.py": "490216c4e2f97dd2aae83dd302e52f7d1ab2cfaedc3a810232fc7212bf9ebbcf",
+    "interior/microstation_researched.py": "d8f4b611fc7bd9640e67593e03cd59692300796c86973b10a51a4c89f123e3b9",
+    "gherkin.py": "57ccc0ffe9a0d0aed7da57c63dd373d195758927865403f96586dc5668916c83",
+    "interior/generator.py": "b6b7d831c15705f38b5690144e7f80f20b55cbdfbda83bc8b1162d9f01216795",
+    "tools/privacy_scan.py": "95f2dc9a9382013cbc8dd1278a274694cf26e124c29889cbe3f6f9e76c58fbee",
+    "tests/test_privacy.py": "2715c1741b5d3fc4662d20aee23546c3dccf78443e48d6b96ebb9f556efe4624"
+  },
+  "scope_limits": [
+    "MicroStation was not rerun for this privacy-only revision; its earlier native build validation remains historical evidence.",
+    "Raw application consoles and native metadata are private; the existing local DGN has a workstation identifier in SummaryInformation.",
+    "The scanner does not certify all possible secrets or arbitrary PII. Public source attribution and the GitHub noreply identity remain intentional."
+  ],
+  "local_regressions": {
+    "full_suite_passed_before_final_ignore_edge_case": 36,
+    "latest_privacy_tests_passed": 13,
+    "current_suite_tests": 37
+  }
+}

@@ -9,6 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 import gherkin
+from privacy import create_output_directory, ignore_output_file
 from interior.geometry import area, box, clear_point, clear_segment, combine, corners, in_rect, inside, local_xy, mesh_health, overlaps, perforated_slab, segment_distance, stair_flight, transform, tube
 
 
@@ -586,6 +587,8 @@ def generate(exterior=None, settings=None):
 
 def schedules(output, recipe):
     output = Path(output)
+    for name in ('rooms.csv', 'components.csv', 'design-status.json', 'electrical-circuits.csv', 'lift-schedule.json'):
+        ignore_output_file(output / name)
     with (output / 'rooms.csv').open('w', newline='', encoding='utf-8') as stream:
         writer = csv.DictWriter(stream, fieldnames=['id', 'level', 'use', 'area_m2', 'evidence'])
         writer.writeheader()
@@ -611,7 +614,7 @@ def main():
     parser.add_argument('--exterior-parameters', type=Path)
     parser.add_argument('--output-dir', type=Path, required=True)
     args = parser.parse_args()
-    args.output_dir.mkdir(parents=True, exist_ok=False)
+    create_output_directory(args.output_dir)
     settings = load_settings(args.parameters or ROOT / ('interior/parameters-researched.json' if args.variant == 'researched' else 'interior/parameters.json'))
     exterior = gherkin.load_parameters(args.exterior_parameters) if args.exterior_parameters else None
     recipe = generate(exterior, settings)

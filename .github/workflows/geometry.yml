@@ -3,6 +3,18 @@ on: [push, pull_request, workflow_dispatch]
 permissions:
   contents: read
 jobs:
+  privacy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python tools/privacy_scan.py --history
+      - run: git archive --format=zip --prefix=gherkin-generator/ --output=public-source.zip HEAD
+      - run: python tools/privacy_scan.py --archive public-source.zip
   geometry:
     runs-on: ${{ matrix.os }}
     strategy:
